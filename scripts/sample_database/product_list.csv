@@ -1,0 +1,24 @@
+ID00,PRODUCT0,UNIT0,HSN,GST
+id01,sample01,unit1,1,12.00%
+id02,sample02,unit2,2,12.00%
+id03,sample03,unit3,3,12.00%
+id04,sample04,unit4,4,6.00%
+id05,sample05,unit5,5,6.00%
+id06,sample06,unit6,6,12.00%
+id07,sample07,unit7,7,12.00%
+id08,sample08,unit8,8,12.00%
+id09,sample09,unit9,9,12.00%
+id10,sample10,unit10,10,24.00%
+id11,sample11,unit11,11,24.00%
+id12,sample12,unit12,12,12.00%
+id13,sample13,unit13,13,12.00%
+id14,sample14,unit14,14,6.00%
+id15,sample15,unit15,15,6.00%
+id16,sample16,unit16,16,12.00%
+id17,sample17,unit17,17,0.00%
+id18,sample18,unit18,18,0.00%
+id19,sample19,unit19,19,12.00%
+id20,sample20,unit20,20,12.00%
+idxx,samplexx,unitxx,0,0.00%
+id_new,New Product,unit11,12557,06
+id-new,New Product,unit11,215466,02
