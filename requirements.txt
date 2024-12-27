@@ -1,0 +1,5 @@
+numpy
+pandas
+pylatex
+pdflatex
+tkcalendar
