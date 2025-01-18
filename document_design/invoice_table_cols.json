@@ -1,0 +1,14 @@
+{
+	"REF_NO":["Sr No",6],
+	"PRODUCT0":["Description of Goods",41],
+	"HSN":["HSN",11],
+	"MFG":["MFG. NAME",10],
+	"BATCH00":["Batch No.",15],
+	"EXP00":["Exp.Dt.",14],
+	"GST":["GST",9],
+	"QTY":["Qty.",14],
+	"RATE":["Rate",15],
+	"MRP":["MRP",12],
+	"UNIT0":["Unit",10],
+	"AMOUNT":["Amount",23]
+}

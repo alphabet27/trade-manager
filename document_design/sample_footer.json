@@ -1,0 +1,12 @@
+{
+	"Taxes":[[5,0,0],[12,22315,1338.90],[18,0,0]],
+	"bank_info":{"Bank":"Name of Bank",
+				 "ACC No":12345678,
+				 "IFSC":"BANK_01234",
+				 "BRANCH":"Branch of Bank"},
+	"TnC":["Adhere to TnC_1",
+		   "Adhere to TnC_2",
+		   "Adhere to TnC_3",
+		   "Adhere to TnC_4",
+		   "Adhere to TnC_5"]
+}

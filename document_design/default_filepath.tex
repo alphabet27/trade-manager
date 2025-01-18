@@ -1,0 +1,108 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{top=5mm,left=5mm,right=5mm}%
+\usepackage{ragged2e}%
+%
+\usepackage{multirow}%
+\renewcommand*{\familydefault}{\ttdefault}%
+\usepackage{array}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}%
+\setlength{\tabcolsep}{1mm}%
+\usepackage{multirow}%
+\renewcommand*{\familydefault}{\ttdefault}%
+%
+\begin{document}%
+\normalsize%
+\begin{Huge}%
+\begin{center}%
+Company Name%
+\end{center}%
+\end{Huge}%
+\begin{Large}%
+\begin{center}%
+Your Company Description Line 1%
+\linebreak%
+Your Company Description Line 2%
+\linebreak%
+Your Company Address%
+\linebreak%
+Your Company Phone Number and Email%
+\linebreak%
+Tax Invoice%
+\end{center}%
+\end{Large}%
+\begin{center}%
+\begin{tabular}{|R{6mm}|L{41mm}|p{11mm}|p{10mm}|p{15mm}|p{14mm}|p{9mm}|p{14mm}|p{15mm}|p{12mm}|p{10mm}|R{23mm}|}%
+\hline%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{%
+Customer Name%
+\linebreak%
+Address Line 1%
+\linebreak%
+Address Line 2%
+\linebreak%
+Address Line 3%
+\linebreak%
+Address Line 4%
+\linebreak%
+State%
+\linebreak%
+GSTIN\_No.}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+Inv\_No%
+\linebreak%
+Inv\_DtInv\_Dt}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+Chl\_NoChl\_No%
+\linebreak%
+Chl\_DtChl\_Dt}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+%
+\linebreak%
+%
+\linebreak%
+CHQ. No.}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\hline%
+Sr No&Description of Goods&HSN&MFG. NAME&Batch No.&Exp.Dt.&GST&Qty.&Rate&MRP&Unit&Amount\\%
+\hline%
+1&Prod\_01&HSN\_01&MFG\_01&Batch\_01&EXP\_01&GST\_01&Qty\_01&Rate\_01&MRP\_01&Unit\_01&Amt\_01\\%
+2&Prod\_02&HSN\_02&MFG\_02&Batch\_02&EXP\_02&GST\_02&Qty\_02&Rate\_02&MRP\_02&Unit\_02&Amt\_02\\%
+3&Prod\_03&HSN\_03&MFG\_03&Batch\_03&EXP\_03&GST 03&Qty\_03&Rate\_03&MRP\_03&Unit\_03&Amt\_03\\%
+4&Prod\_04&HSN\_04&MFG\_04&Batch\_04&EXP\_04&GST 0004&Qty\_04&Rate\_04&MRP\_04&Unit\_04&Amt\_04\\%
+5&Prod\_05&HSN\_05&MFG\_05&Batch\_05&EXP\_05&GST\_05&Qty\_05&Rate\_05&MRP\_05&Unit\_05&Amt\_05\\%
+6&Prod\_06&HSN\_06&MFG\_06&Batch\_06&EXP\_06&GST\_06&Qty\_06&Rate\_06&MRP\_06&Unit\_06&Amt\_06\\%
+7&Prod\_07&HSN\_07&MFG\_07&Batch\_07&EXP\_07&GST\_07&Qty\_07&Rate\_07&MRP\_07&Unit\_07&Amt\_07\\%
+8&Prod\_08&HSN\_08&MFG\_08&Batch\_08&EXP\_08&GST\_08&Qty\_08&Rate\_08&MRP\_08&Unit\_08&Amt\_08\\%
+9&Prod\_09&HSN\_09&MFG\_09&Batch\_09&EXP\_09&GST\_09&Qty\_09&Rate\_09&MRP\_09&Unit\_09&Amt\_09\\%
+10&Prod\_10&HSN\_10&MFG\_10&Batch\_10&EXP\_10&GST\_10&Qty\_10&Rate\_10&MRP\_10&Unit\_10&Amt\_10\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\end{document}
