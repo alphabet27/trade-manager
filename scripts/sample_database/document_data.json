@@ -1,0 +1,15 @@
+{
+	"gmt_options":{"height":"297mm","width":"210mm","top":"5mm","left":"5mm","right":"5mm"},
+	"company_name" :"Company Name",
+	"company_desc_line_1" :"Your Company Description Line 1",
+	"company_desc_line_2" :"Your Company Description Line 2",
+	"company_address" :"Your Company Address",
+	"company_contact_info" :"Your Company Phone Number and Email",
+	"document_invoice_type" :"Tax Invoice",
+	"TnC_1":"Adhere to terms and conditions",
+	"TnC_2":"Adhere to terms and conditions",
+	"TnC_3":"Adhere to terms and conditions",
+	"TnC_4":"Adhere to terms and conditions",
+	"TnC_5":"Adhere to terms and conditions",
+	"invoice_table_cols":{"Env":["R", "L", "p", "p", "p", "p", "p", "p", "p", "p", "p", "R"], "widths":[6,41,11,10,15,14,9,14,15,12,10,23]}
+}

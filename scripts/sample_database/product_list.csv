@@ -1,0 +1,26 @@
+ID00,PRODUCT0,MFG,UNIT0,HSN,GST,STOCK
+id01,sample01,mfg1,unit1,1,12.0,"{""batch01"": {""QTY"": 76, ""EXP"": ""exp01""}}"
+id02,sample02,mfg1,unit1,2,12.0,"{""batch02"": {""QTY"": 6, ""EXP"": ""exp02""}}"
+id03,sample03,mfg2,unit1,3,12.0,{}
+id04,sample04,mfg2,unit4,4,6.0,"{""batch04"": {""QTY"": 72, ""EXP"": ""exp04""}, ""bat3003"": {""QTY"": 15, ""EXP"": ""ex303""}}"
+id05,sample05,mfg_pqr,unit5,5,6.0,"{""-----"": {""EXP"": ""-----"", ""QTY"": -3, ""MRP"": 130.0}}"
+id06,sample06,mfg1,unit6,6,12.0,"{""batch06"": {""QTY"": 51, ""EXP"": ""exp06""}}"
+id07,sample07,mfg1,unit6,7,12.0,{}
+id08,sample08,mfg_pqr,unit6,8,12.0,"{""batch08"": {""QTY"": 16, ""EXP"": ""exp08""}}"
+id09,sample09,mfg2,unit9,9,12.0,{}
+id10,sample10,mfg3,unit14,10,24.0,"{""batch10"": {""QTY"": 80, ""EXP"": ""exp10""}}"
+id11,sample11,mfg4,unit14,11,24.0,"{""batch11"": {""QTY"": 46, ""EXP"": ""exp11""}, ""bat3011"": {""QTY"": 20, ""EXP"": ""ex311""}, ""bat4011"": {""QTY"": 1, ""EXP"": ""ex411""}}"
+id12,sample12,mfg_pqr,unit14,12,12.0,"{""batch12"": {""QTY"": 49, ""EXP"": ""exp12""}}"
+id13,sample13,mfg1,unit14,13,12.0,{}
+id14,sample14,mfg2,unit14,14,6.0,"{""batch14"": {""QTY"": 45, ""EXP"": ""exp14""}}"
+id15,sample15,mfg1,unit15,15,6.0,"{""batch15"": {""QTY"": 75, ""EXP"": ""exp15""}}"
+id16,sample16,mfg4,unit16,16,12.0,"{""batch16"": {""QTY"": 98, ""EXP"": ""exp16""}}"
+id17,sample17,mfg4,unit1,17,0.0,"{""batch17"": {""QTY"": 22, ""EXP"": ""exp17""}, ""bat3017"": {""QTY"": 19, ""EXP"": ""ex317""}}"
+id18,sample18,mfg1,unit18,18,0.0,"{""batch18"": {""QTY"": 75, ""EXP"": ""exp18""}}"
+id19,sample19,mfg_pqr,unit5,19,12.0,{}
+id20,sample20,Mfg_5,unit5,20,12.0,"{""batch20"": {""QTY"": 4, ""EXP"": ""exp20""}}"
+idxx,samplexx,Mfg_5,unit5,48,0.0,{}
+id_new,New Product,mfg2,unit11,12557,6.0,{}
+id-new,New Product,mfg2,unit11,215466,2.0,{}
+id-1234,sample7896,mfg007,pqrstuv,4567,19.48,{}
+id21,new 21st product,mfg_pqr,pqrstuv,132,11.0,{}
