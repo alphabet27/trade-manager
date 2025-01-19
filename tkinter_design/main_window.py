@@ -60,7 +60,10 @@ class menubar:
 
 if __name__=='__main__':
 	window = tk.Tk()
-	window.attributes('-zoomed', True)
+	try:
+		window.state('zoomed')
+	except:	
+		window.attributes('-zoomed', True)
 	window.title('TRADE MANAGER MAIN WINDOW')
 	
 	tabctrl = ttk.Notebook(window)
