@@ -197,7 +197,10 @@ class pop_up_window:
 		temp.update({'BATCH':self.batch_sel.get()})
 		print(self.sh1.stock_info)
 		temp.update({'EXP':self.sh1.stock_info[temp['BATCH']]['EXP']})
-		l1 = self.tr_manager.df_bill.index.max() + 1
+		if len(self.tr_manager.df_bill)>0:
+			l1 = self.tr_manager.df_bill.index.max() + 1
+		else:
+			l1 = 0
 		temp['REF_NO'] = 1
 		if len(self.tr_manager.df_bill)>0:
 			temp['REF_NO'] = self.tr_manager.df_bill.REF_NO.max()+1
@@ -213,6 +216,7 @@ class pop_up_window:
 		temp['BATCH00'] = temp.pop('BATCH')
 		temp['EXP00'] = temp.pop('EXP')
 		temp['TAXABLE'] = temp['QTY']*temp['RATE']*(100 - temp['DISC'])/100
+		print("Writing at index",l1)
 		self.tr_manager.df_bill.loc[l1] = temp
 		self.final_data.update(temp)
 		self.save_succ = True
