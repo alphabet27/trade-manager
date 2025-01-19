@@ -68,6 +68,9 @@ class transactions:
 			self.curr_billdata = None
 		
 	def add_transactions(self,billno,billdata,df_entries=None,**kwargs):
+		if billno in self.df_billdata['BILL0'].tolist():
+			raise Exception(str(billno)+" exists")
+		print("No error, proceeding")
 		if df_entries is None:
 			df_entries = self.df_bill
 		ext = max(list(self.df_transaction.index))
@@ -76,7 +79,10 @@ class transactions:
 			temp['BILL0'] = billno
 			self.df_transaction.loc[ext+i+1] = temp
 		self.df_billdata.reset_index(inplace=True,drop=True)
+		billdata.update({"BILL0":billno})
 		self.df_billdata.loc[len(self.df_billdata)] = billdata
+		print("Adding billdata",billdata)
+		print("Last 5 bills",self.df_billdata.tail(5))
 		print('Added')
 	
 	def edit_transactions(self,billno=None,billdata={},df_editables=None,**kwargs):
@@ -97,6 +103,11 @@ class transactions:
 		self.df_billdata.loc[nb] = self.curr_billdata
 		
 	def save(self,bill_info=True,full_transactions=True):
+		self.df_billdata["BILL0"] = pd.to_numeric(self.df_billdata["BILL0"])
+		self.df_transaction["BILL0"] = pd.to_numeric(self.df_transaction["BILL0"])
+		self.df_transaction["REF_NO"] = pd.to_numeric(self.df_transaction["REF_NO"])
+		self.df_billdata.sort_values('BILL0',inplace=True)
+		self.df_transaction.sort_values(["BILL0","REF_NO"],inplace=True)
 		if bill_info:
 			self.df_billdata.to_csv(self.billdata_path,index=False)
 		if full_transactions:
