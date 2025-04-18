@@ -4,7 +4,7 @@ import pandas as pd
 import tkinter as tk
 from tkinter import ttk
 from font import main_font
-from sub_windows import error_message
+from sub_windows import error_message, exit_conf
 from party_editor import party_class
 from product_editor import product_class
 from transaction_list import transaction_frame
@@ -45,7 +45,13 @@ class menubar:
 		os.system('"' + exec_path + '"' + ' ' + filename)
 
 	def nb_add(self, tab_name, tab_class, *args, **kwargs):
-		self.attr_main[tab_name] = tab_class(tab_name, self.tabControl, self.database, self.attr_main, *args, **kwargs)
+		if not tab_name in self.attr_main.keys():
+			self.attr_main[tab_name] = tab_class(tab_name, self.tabControl, self.database, self.attr_main, *args, **kwargs)
+			self.attr_main[tab_name].canc_button.config(command = lambda:self.nb_remove(tab_name))
+			self.tabControl.select(self.attr_main[tab_name].frame)
+		else:
+			self.tabControl.select(self.attr_main[tab_name].frame)
+			print("Tab already created")
 
 	def nb_remove(self, tab_name):
 		if not tab_name in self.attr_main.keys():
@@ -53,16 +59,21 @@ class menubar:
 		elif hasattr(self.attr_main[tab_name],'sub_frames'):
 			if not len(self.attr_main[tab_name].sub_frames)==0:
 				raise Exception("Close active tabs "+str(self.attr_main[tab_name].sub_frames))
+			else:
+				cf_1 = exit_conf(self.attr_main[tab_name].frame)
+				if cf_1.close_succ:
+					del self.attr_main[tab_name]
 		else:
-			del self.attr_main[tab_name]
-
+			cf_1 = exit_conf(self.attr_main[tab_name].frame)
+			if cf_1.close_succ:
+				del self.attr_main[tab_name]
 
 
 if __name__=='__main__':
 	window = tk.Tk()
 	try:
 		window.state('zoomed')
-	except:	
+	except:
 		window.attributes('-zoomed', True)
 	window.title('TRADE MANAGER MAIN WINDOW')
 	

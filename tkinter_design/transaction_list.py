@@ -5,6 +5,7 @@ from font import head_font
 from font import main_font
 from commands import manage_prod
 from commands import transactions
+from sub_windows import exit_conf
 from transaction_make import transact_frame
 from view_dataframe import create_treeview
 
@@ -75,13 +76,22 @@ class transaction_frame:
 		self.tr_manager.prod_man = manage_prod(database)
 		self.tr_manager.product_map = self.tr_manager.prod_man.prod_df
 		self.tr_manager.billdata(billno)	# Pull data from here (Remove line in transaction_make)
-		l = len(self.sub_frames)
-		self.sub_frames.append('add_or_edit_trsc_'+str(l))
-		setattr(self,'sub_frame'+str(l),ttk.Frame(self.notebook))
-		self.attr_main['add_or_edit_trsc_'+str(l)]=transact_frame(getattr(self,'sub_frame'+str(l)), self.tr_manager, billno=billno, **kwargs)
-		self.notebook.add(getattr(self,'sub_frame'+str(l)), text=label)
-		self.notebook.select(getattr(self,'sub_frame'+str(l)))
-		#self.notebook.pageconfigure('trsc_man', state='disabled')
+		if not 'add_or_edit_trsc' in self.sub_frames:
+			self.sub_frames.append('add_or_edit_trsc')
+			setattr(self,'sub_frame',ttk.Frame(self.notebook))
+			self.attr_main['add_or_edit_trsc']=transact_frame(getattr(self,'sub_frame'), self.tr_manager, billno=billno, **kwargs)
+			self.notebook.add(getattr(self,'sub_frame'), text=label)
+			self.notebook.select(getattr(self,'sub_frame'))
+			self.attr_main['add_or_edit_trsc'].close_button.config(command=self.close_sub_frame)
+			#self.notebook.pageconfigure('trsc_man', state='disabled')
+		else:
+			raise Exception("Add Mode or Edit Mode Already Active")
+
+	def close_sub_frame(self):
+		cf_1 = exit_conf(self.sub_frame)
+		if cf_1.close_succ:
+			self.sub_frames.remove('add_or_edit_trsc')
+
 
 	def save_edits(self):
 		#self.tr_manager.add
@@ -94,7 +104,7 @@ class transaction_frame:
 
 if __name__=='__main__':
 	window = tk.Tk()
-	window.title('Add/Edit Transactions')
+	window.title('Add/Edit Transactions')#self.notebook.pageconfigure('trsc_man', state='disabled')
 	window.state('zoomed')
 
 	tabctrl = ttk.Notebook(window)

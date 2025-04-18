@@ -1,0 +1,145 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{geometry}%
+\geometry{height=297mm,width=210mm,top=5mm,left=5mm,right=5mm}%
+\usepackage{ragged2e}%
+%
+\usepackage{array}
+\usepackage{multirow}
+%\usepackage{}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+\setlength{\tabcolsep}{1mm}
+\renewcommand*{\familydefault}{\ttdefault}
+
+%
+%
+\begin{document}%
+\pagestyle{empty}%
+\normalsize%
+\begin{Huge}%
+\begin{center}%
+Company Name%
+\end{center}%
+\end{Huge}%
+\begin{Large}%
+\begin{center}%
+Your Company Description Line 1%
+\linebreak%
+Your Company Description Line 2%
+\linebreak%
+Your Company Address%
+\linebreak%
+Your Company Phone Number and Email%
+\linebreak%
+Tax Invoice%
+\end{center}%
+\end{Large}%
+\begin{center}%
+\begin{tabular}{|R{6mm}|L{41mm}|p{11mm}|p{10mm}|p{15mm}|p{14mm}|p{9mm}|p{14mm}|p{15mm}|p{12mm}|p{10mm}|R{23mm}|}%
+\hline%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{%
+Customer Name%
+\linebreak%
+Address Line 1%
+\linebreak%
+Address Line 2%
+\linebreak%
+Address Line 3%
+\linebreak%
+Address Line 4%
+\linebreak%
+State%
+\linebreak%
+GSTIN\_No.}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+Inv\_No : Inv\_No%
+\linebreak%
+Inv\_Dt : Inv\_Dt}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+Chl\_No : Chl\_No%
+\linebreak%
+Chl\_Dt : Chl\_Dt}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{%
+%
+\linebreak%
+%
+\linebreak%
+CHQ. No.}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\multicolumn{7}{|l}{\multirow{8}{200pt}{}}&\multicolumn{5}{|l|}{\multirow{2}{200pt}{}}\\%
+\hline%
+Sr No&Description of Goods&HSN&MFG. NAME&Batch No.&Exp.Dt.&GST&Qty.&Rate&MRP&Unit&Amount\\%
+\hline%
+1&Prod\_01&HSN\_01&MFG\_01&Batch\_01&EXP\_01&5&32&55&MRP\_01&Unit\_01&1848.0\\%
+2&Prod\_02&HSN\_02&MFG\_02&Batch\_02&EXP\_02&5&21&55&MRP\_02&Unit\_02&1212.75\\%
+3&Prod\_03&HSN\_03&MFG\_03&Batch\_03&EXP\_03&5&2&200&MRP\_03&Unit\_03&420.0\\%
+4&Prod\_04&HSN\_04&MFG\_04&Batch\_04&EXP\_04&12&13&30&MRP\_04&Unit\_04&436.8\\%
+5&Prod\_05&HSN\_05&MFG\_05&Batch\_05&EXP\_05&18&5&2&MRP\_05&Unit\_05&11.8\\%
+6&Prod\_06&HSN\_06&MFG\_06&Batch\_06&EXP\_06&12&2&25&MRP\_06&Unit\_06&56.0\\%
+7&Prod\_07&HSN\_07&MFG\_07&Batch\_07&EXP\_07&5&10&30&MRP\_07&Unit\_07&315.0\\%
+8&Prod\_08&HSN\_08&MFG\_08&Batch\_08&EXP\_08&5&15&10&MRP\_08&Unit\_08&157.5\\%
+9&Prod\_09&HSN\_09&MFG\_09&Batch\_09&EXP\_09&18&40&150&MRP\_09&Unit\_09&7080.0\\%
+10&Prod\_10&HSN\_10&MFG\_10&Batch\_10&EXP\_10&5&100&400&MRP\_10&Unit\_10&42000.0\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+&&&&&&&&&&&\\%
+\hline%
+\multicolumn{7}{|l}{\multirow{7}{200pt}{%
+\begin{tabular}{|L{28mm} R{26mm} R{26mm} R{26mm}|}%
+\hline%
+Tax Name&Taxable&CGST&SGST\\%
+GST 05\%&43765.0&2188.25&2188.25\\%
+GST 12\%&440.0&52.8&52.8\\%
+GST 18\%&6010.0&1081.8&1081.8\\%
+\hline%
+\end{tabular}}}&\multicolumn{4}{|l|}{Net. Amount}&50215\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{CGST}&3322.85\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{SGST}&3322.85\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{}&\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{Other Charges}&\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{Round Off}&\\%
+\cline{8%
+-%
+12}%
+\multicolumn{7}{|l}{}&\multicolumn{4}{|l|}{\begin{Large}%
+Grand Total%
+\end{Large}}&53537\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\end{document}

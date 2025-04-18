@@ -158,6 +158,7 @@ class transact_frame:
 
 	def confirm_exit(self,mytext='Close without saving?'):
 		cf_1 = exit_conf(self.window)
+		#print(self.window.isdestroyed())
 
 	def print_bill(self):
 		self.to_save(closewin=False)
@@ -178,6 +179,7 @@ class transact_frame:
 			taxes.append([tax,temp['TAXABLE'].sum(),(temp['TAXABLE']*tax/100).sum()])
 		doc_footer["Taxes"] = taxes
 		invoice_info = {"BILL0":self.billno}
+		print("Saving invoice",invoice_info)
 		invoice_info.update({"customer_info":self.tr_manager.get_party_data(self.ss1.out['ALIAS0'], get_full=True)})
 		invoice_info.update(self.ee1.get_entries())
 		invoice_info.update({"bill_df_ren":new_df_bill})

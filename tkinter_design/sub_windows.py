@@ -39,6 +39,7 @@ class exit_conf:
 		self.font = main_font
 		self.isroot = isroot
 		self.istab = istab
+		self.close_succ = False
 
 		self.conf = tk.Toplevel(self.base_win)
 		self.conf.title('Exit?')
@@ -61,10 +62,15 @@ class exit_conf:
 			if not self.istab['val']:
 				self.base_win.destroy()
 			else:
+				print("Before",self.istab)
+				self.base_win.destroy()
 				self.istab['tabctrl'].forget(self.istab['tab_id'])
-				self.istab['tablist'].remove('tab_id')# Add the "Notebook(TabControl)" instead of base window
+				#self.istab['tablist'].remove('tab_id')	# Add the "Notebook(TabControl)" instead of base window
+				print("After",self.istab)
+			self.close_succ = True
 		except:
 			self.conf.destroy()
+			self.close_succ = False
 
 class billno_window:
 	def __init__(self,base_win,billno_default):

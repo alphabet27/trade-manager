@@ -10,3 +10,8 @@ BILL0,ALIAS0,DATE0,SUBDATA
 9,alias08,07/01/2025,"{""CHL. No."": ""132"", ""CHL. Dt."": ""12/2024"", ""P.O. No."": ""----"", ""P.O. Dt."": ""----""}"
 10,alias10,dd/mm,{}
 11,alias17,dd/mm,{}
+12,alias06,22,{}
+13,alias06,12,"{""CHL. No."": ""--"", ""CHL. Dt."": ""--"", ""P.O. No."": ""pkxapo"", ""P.O. Dt."": ""xlnmlc""}"
+15,alias05,-----,{}
+16,alias06,---,{}
+17,alias06,13,{}

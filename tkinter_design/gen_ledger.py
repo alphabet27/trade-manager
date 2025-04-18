@@ -10,7 +10,7 @@ database = {"party_path" : '../scripts/sample_database/party_list.csv',
 
 
 class ledger_frame:
-	def __init__(self,frame,tr_manager):
+	def __init__(self,tab_name,notebook,database):
 		self.frame = frame
 		self.tr_manager = tr_manager
 		self.ledger_manager = ledger_manager(database)
@@ -32,8 +32,8 @@ class ledger_frame:
 		self.save_button = tk.Button(self.window, text='Save Bill', command=self.to_save, font=self.font)
 		self.save_button.grid(row=self.ro, column=4, pady=3, sticky='ew')
 
-		self.close_button = tk.Button(self.window, text='Exit', command=self.confirm_exit, font=self.font)
-		self.close_button.grid(row=self.ro, column=5, pady=3, sticky='ew')
+		self.canc_button = tk.Button(self.window, text='Exit', command=self.confirm_exit, font=self.font)
+		self.canc_button.grid(row=self.ro, column=5, pady=3, sticky='ew')
 
 	def to_save(self):
 		pass
@@ -42,5 +42,17 @@ class ledger_frame:
 		pass
 
 if __name__=="__main__":
-	pass
+	window = tk.Tk()
+	window.title('Add/Edit Transactions')
+	try:
+		window.state('zoomed')
+	except:
+		window.attributes('-zoomed', True)
+
+	tabctrl = ttk.Notebook(window)
+	tabctrl.pack(fill=tk.BOTH, expand=True)
+
+	ldr_frame = ledger_frame('trsc_man',tabctrl,database)
+
+	window.mainloop()
 

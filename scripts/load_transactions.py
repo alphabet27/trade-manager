@@ -5,6 +5,17 @@ database = {"party_path" : '../scripts/sample_database/party_list.csv',
 			"billdata_path" : '../scripts/sample_database/sale_billdata.csv',
 			"transactions_path" : '../scripts/sample_database/sale_fulldata.csv'}
 
+db_path = 'scripts/sample_database/'
+db_addr = {"fulldata" : {"fy1":'fulldata_fy1.csv',
+					 "fy2":'fulldata_fy1.csv'}}
+
+
+'''		Make database loader in the following format
+class loader_2:
+	def __init__(self,db_path, db_addr, fy,prod_man=None,mode='sale'):
+		self.full_dpath = db_path + db_addr[fy]
+'''
+
 class transactions:
 	def __init__(self,database,prod_man=None,mode='sale'):
 		self.mode = mode		# Will be used soon
@@ -27,7 +38,7 @@ class transactions:
 		sr1 = (new_df.QTY * (new_df.RATE*(1 - new_df.DISC/100))).reset_index(drop=True)
 		sr1.name = 'TAXABLE'
 		return sr1
-		
+
 	def get_party_data(self,alias,get_full=False):
 		if get_full:
 			party_map = pd.read_csv(database["party_path"])
@@ -47,7 +58,7 @@ class transactions:
 			i+=1
 		self.no_loadings += 1
 		self.df_full = df_full
-		
+
 	def billdata(self,billno):
 		if not billno==0:
 			df_bill = self.df_transaction[self.df_transaction['BILL0'] == billno]
@@ -66,7 +77,7 @@ class transactions:
 			df_bill = pd.DataFrame(columns=list(self.df_transaction.columns)+['PRODUCT0','HSN','TAXABLE'])
 			self.df_bill = df_bill.drop(df_bill.columns[0],axis=1)[['REF_NO','ID00','PRODUCT0','HSN','QTY','RATE','MRP','GST','DISC','BATCH00','EXP00','TAXABLE']]
 			self.curr_billdata = None
-		
+
 	def add_transactions(self,billno,billdata,df_entries=None,**kwargs):
 		if billno in self.df_billdata['BILL0'].tolist():
 			raise Exception(str(billno)+" exists")
@@ -84,7 +95,7 @@ class transactions:
 		print("Adding billdata",billdata)
 		print("Last 5 bills",self.df_billdata.tail(5))
 		print('Added')
-	
+
 	def edit_transactions(self,billno=None,billdata={},df_editables=None,**kwargs):
 		self.curr_billdata.update(billdata)
 		if billno is None:
@@ -101,7 +112,7 @@ class transactions:
 		self.df_transaction.sort_values(by=['BILL0','REF_NO'], inplace=True, ascending=[True,True])
 		nb = self.df_billdata[self.df_billdata['BILL0']==billno].iloc[0].name
 		self.df_billdata.loc[nb] = self.curr_billdata
-		
+
 	def save(self,bill_info=True,full_transactions=True):
 		self.df_billdata["BILL0"] = pd.to_numeric(self.df_billdata["BILL0"])
 		self.df_transaction["BILL0"] = pd.to_numeric(self.df_transaction["BILL0"])
