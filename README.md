@@ -1,15 +1,13 @@
 # trade-manager
-A basic python based application for handling common business transactions and inventory. Modules are yet to be fully defined. 
+A basic python based application for handling common business transactions and inventory. Report Generation functionality is available yet.
 
-The ```main_window.py``` in ```tkinter_design``` is the main window of this application.
-
-A sample database is made in ```/scripts```
+The ```app_main.py``` in ```gui``` is the main window of this application.
 
 For setting up the prereuisites, run 
-``` pip install -r requirements.txt```
+```
+	pip install -r requirements.txt
+	cd database && python setup.py
+```
 
 Run the following command in the terminal
-```python tkinter_design/<module-name>```
-
-For example
-```python main_window.py```
+```cd gui && python main_window.py```
