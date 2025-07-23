@@ -1,0 +1,90 @@
+{
+	"title": "Invoice View",
+	"frames":{
+		"controls_1":{
+			"widgets":[
+				{
+					"class":"Button",
+					"text" :"Add New",
+					"command": "on_add",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":0, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Edit",
+					"command": "on_edit",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":2, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Delete",
+					"command": "on_delete",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":3, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Refresh",
+					"command": "on_refresh",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":4, "padx":1, "pady":10}
+				}
+			],
+			"grid":{"row":3, "column":0, "sticky":"w"}
+		},
+		"controls_2":{
+			"widgets":[
+				{
+					"class":"Button",
+					"text" :"Print",
+					"command": "on_print",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":0, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Save",
+					"command": "on_save",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":1, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Exit",
+					"command": "on_exit",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":2, "padx":1, "pady":10}
+				}
+			],
+			"grid":{"row":3, "column":2, "sticky":"e"}
+		}
+	},
+	"custom_frames":{
+		"search_block":{
+			"class": "selector",
+			"sql_query": "select * from party_db where ACC_TYPE='sale';",
+			"keys":["ALIAS","PARTY_NAME"],
+			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
+		},
+		"create_treeview":{
+			"class" : "create_treeview",
+			"from_sql" : false,
+			"columns" : ["SR_NO","PID","PRODUCT_NAME", "HSN_CODE", "QTY", "RATE", "DISC", "GST", "BATCH", "EXPIRY", "TAXABLE"],
+			"show_only" : ["SR_NO","PID","PRODUCT_NAME", "QTY", "RATE", "DISC", "GST", "BATCH", "EXPIRY", "TAXABLE"],
+			"params" : [],
+			"widths" : {"SR_NO":5, "PID":60, "PRODUCT_NAME":400, "QTY":5,
+						"RATE":20, "DISC":20, "GST":20, "BATCH" : 60, "EXPIRY":40, "TAXABLE":100},
+			"grid":{"row":2, "column":0, "columnspan":3, "sticky":"nsew"}
+		},
+		"widget_block":{
+			"class": "widget_block",
+			"entry_dict": {"BILL":"", "INVOICE_DATE":"", "PO_NO":"", "PO_DT":"",
+						   "CHL_NO":"", "CHL_DT":"", "NARR":""},
+			"disabled":["BILL"],
+			"shape":[4,2],
+			"grid":{"row":1, "column":1, "padx":20, "columnspan":2, "sticky":"w"}
+		}
+	}
+}

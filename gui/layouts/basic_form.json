@@ -1,0 +1,69 @@
+{
+	"title": "Product Form",
+	"frames":{
+		"controls_frame": {
+			"widgets": [
+				{
+					"class": "Button",
+					"text" : "Add",
+					"grid" : {"row":0, "column":0, "sticky":"ne"},
+					"command" : "on_add",
+					"command_kwargs" : {}
+				},
+				{
+					"class": "Button",
+					"text" : "Edit",
+					"grid" : {"row":1, "column":0, "sticky":"ne"},
+					"command" : "on_edit",
+					"command_kwargs" : {}
+				},
+				{
+					"class": "Button",
+					"text" : "Delete",
+					"command" : "on_delete",
+					"command_kwargs" : {},
+					"grid" : {"row":2, "column":0, "sticky":"ne"}
+				},
+				{
+					"class": "Button",
+					"text" : "Save",
+					"command" : "on_save",
+					"command_kwargs" : {},
+					"grid" : {"row":4, "column":0, "sticky":"se", "pady":30, "padx":1}
+				},
+				{
+					"class": "Button",
+					"text" : "Cancel",
+					"command" : "on_cancel",
+					"command_kwargs" : {},
+					"grid" : {"row":4, "column":1, "sticky":"se", "pady":30, "padx":1}
+				}
+			],
+			"grid" : {"row" : 3, "column": 1, "sticky":"s"}
+		},
+		"mode_label_frame":{
+			"widgets":[
+				{
+					"class":"Label",
+					"text" :"Idle Mode",
+					"name" :"mode_label",
+					"grid" :{"row":0, "column":0}
+				}
+			],
+			"grid" : {"row":2, "column":0, "sticky":"w", "padx":10, "pady":10}
+		}
+	},
+	"custom_frames":{
+		"search_block":{
+			"class": "selector",
+			"sql_query": "",
+			"keys":["PID","PRODUCT_NAME"],
+			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
+		},
+		"entry_block":{
+			"class": "widget_block",
+			"entry_dict" : {},
+			"combos":[],
+			"grid" : {"row" : 3, "column" : 0, "sticky":"nw", "padx":20, "pady":30}}
+		}
+}

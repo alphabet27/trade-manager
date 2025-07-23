@@ -1,8 +1,0 @@
-{
-	"prod_map": "product_list.csv",
-	"party_path": "party_list.csv",
-	"billdata_path": "sale_billdata.csv",
-	"document_data": "document_data.json",
-	"transactions_path": "sale_fulldata.csv",
-	"document_table_style": "table_colstyle.tex"
-}

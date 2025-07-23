@@ -1,0 +1,17 @@
+{
+    "menu_bar": {
+        "Setup": {
+            "Party Manager": "PartyForm",
+            "Product Manager": "ProductForm",
+            "FY Year Manager": "FYForm"
+        },
+        "Transaction Views": {
+            "Sale Bills Summary": "SaleSummaryView",
+            "Purchase Bills Summary": "PurchaseSummaryView"
+        },
+        "Payments": {
+            "Record Sale Payment": "SalePaymentForm",
+            "Record Purchase Payment": "PurchasePaymentForm"
+        }
+    }
+}

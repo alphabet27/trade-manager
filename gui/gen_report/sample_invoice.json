@@ -1,0 +1,17 @@
+
+{
+	"BILL":"Inv_No",
+	"DATE":"Inv_Dt",
+	"CHL_NO":"Chl_No",
+	"CHL_DT":"Chl_Dt",
+	"TDS_NO":"TDS_No",
+	"LR_Num":"LR_Num",
+	"Chq_No":"Chq_No",
+	"customer_info":{"PARTY_NAME":"Customer Name",
+					 "ADDRESS_LINE1":"Address Line 1",
+					 "ADDRESS_LINE1":"Address Line 2",
+					 "ADDRESS_LINE1":"Address Line 3",
+					 "ADDRESS_LINE1":"Address Line 4",
+					 "STATE":"State",
+					 "GSTIN":"GSTIN_No."}
+}

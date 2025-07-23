@@ -1,0 +1,91 @@
+{
+	"title": "Transactions Form",
+	"frames":{
+		"controls_frame": {
+			"widgets": [
+				{
+					"class": "Button",
+					"text" : "Save",
+					"command" : "on_save",
+					"command_kwargs" : {},
+					"grid" : {"row":0, "column":0, "sticky":"se", "pady":10, "padx":1}
+				},
+				{
+					"class": "Button",
+					"text" : "Cancel",
+					"command" : "on_cancel",
+					"command_kwargs" : {},
+					"grid" : {"row":0, "column":1, "sticky":"se", "pady":10, "padx":1}
+				}
+			],
+			"grid" : {"row" : 4, "column": 2, "sticky":"ne"}
+		},
+		"mode_label_frame":{
+			"widgets":[
+				{
+					"class":"Label",
+					"text" :"Idle Mode",
+					"name" :"mode_label",
+					"grid" :{"row":0, "column":0}
+				}
+			],
+			"grid" : {"row":2, "column":0, "sticky":"w", "padx":10, "pady":1}
+		},
+		"history_label_frame":{
+			"widgets":[
+				{
+					"class":"Label",
+					"text" :"Product History",
+					"name" :"history_label",
+					"grid" :{"row":0, "column":0}
+				}
+			],
+			"grid" : {"row":0, "column":2, "sticky":"w", "padx":10, "pady":1}
+		},
+		"batch_modif":{
+			"widgets":[
+				{
+					"class": "Button",
+					"text" : "Quick Add",
+					"command" : "quick_add",
+					"command_kwargs" : {},
+					"grid" : {"row":0, "column":0, "sticky":"nw", "pady":10, "padx":1}
+				}
+			],
+			"grid":{"row":3, "column":1, "sticky":"w", "padx":1, "pady":30}
+		}
+	},
+	"custom_frames":{
+		"search_block":{
+			"class": "selector",
+			"sql_query": "select * from product_db;",
+			"keys":["PID","PRODUCT_NAME"],
+			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
+		},
+		"entry_block":{
+			"class": "widget_block",
+			"entry_dict" : {},
+			"shape":[6,2],
+			"combos":[],
+			"grid" : {"row" : 3, "column" : 0, "sticky":"nw", "padx":20, "pady":10}
+		},
+		"history_block":{
+			"class": "create_treeview",
+			"from_sql": false,
+			"columns":["BILL", "QTY", "RATE", "DISC", "BATCH", "EXPIRY", "MRP"],
+			"grid":{"row" : 3, "column" : 2, "sticky":"new", "padx":20}
+		},
+		"history_party_sel":{
+			"class" : "selector",
+			"sql_query" : "select * from party_db where ACC_TYPE='sale';",
+			"keys":["ALIAS", "PARTY_NAME"],
+			"grid":{"row" : 2, "column" : 2, "sticky":"nw", "pady":20}
+		},
+		"history_fy_sel":{
+			"class" : "selector",
+			"sql_query" : "select * from fy_list;",
+			"keys":["FY_ID", "FY_NAME"],
+			"grid":{"row" : 1, "column" : 2, "sticky":"nw", "padx":20}
+		}
+	}
+}
