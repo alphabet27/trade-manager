@@ -1,24 +1,15 @@
-import json
 import webbrowser
-import pandas as pd
-import pylatex as tex
 
-from table_fill import add_products
-from table_info import make_tabular_inv
-from footer_info import make_footer
-#
-# db_path = '../scripts/sample_database/'
-# database = json.load(open(db_path + 'database.json','r'))
-# for db_table, tab_path in database.items():
-# 	database[db_table] = db_path + tab_path
+from .table_fill import *
+from .footer_info import make_footer
 
-document_info = json.load(open('document_data.json','r'))
-table_colstyle = ''.join(open('table_colstyle.tex','r').readlines())
-show_cols = None
-#show_cols = json.load(open('col_widths.json','r'))
+inv_cols = json.load(open("gen_report/invoice_table_cols.json",'r'))
+invoice_info = json.load(open("gen_report/sample_invoice.json",'r'))
+document_info = json.load(open('gen_report/document_data.json','r'))
+table_colstyle = ''.join(open('gen_report/table_colstyle.tex','r').readlines())
 
 class make_document(tex.Document):
-	def __init__(self,document_info,show_cols=show_cols):
+	def __init__(self,document_info,show_cols=None):
 		self.show_cols = show_cols
 		self.document_info = document_info
 
@@ -35,15 +26,18 @@ class make_document(tex.Document):
 		line_01.append(tex.LineBreak())
 		line_01.append(self.document_info["company_contact_info"])
 		line_01.append(tex.LineBreak())
-		line_01.append(self.document_info["document_invoice_type"])
-		#
+		table = tex.Tabular(r"R{65mm} C{65mm} L{65mm}", width=3)
+		table.add_row(("GSTIN NO. " + self.document_info["GSTIN NO."],
+						self.document_info["document_invoice_type"],
+						"STATE CODE " + self.document_info["STATE CODE"]))
+		line_01.append(table)
 		self.append(title)
 		self.append(tex.basic.LargeText(line_01))
 
 	def make_invoice_table(self, invoice_info, footer_info, show_cols):
 		table = make_tabular_inv(self, invoice_info)
-		#table = add_products(table, invoice_info["bill_df_ren"][list(show_cols.keys())], show_cols)
-		#make_footer(table, footer_info, document_info["company_name"])
+		table = add_products(table, invoice_info["bill_df_ren"][list(show_cols.keys())], show_cols)
+		make_footer(table, footer_info, document_info["company_name"])
 
 	def save(self,filename,source=False,doc=True,compiler='pdflatex',opendoc=False):
 		if source:
@@ -57,23 +51,40 @@ class make_document(tex.Document):
 			else:
 				raise Exception("Saved to "+filename)
 
-if __name__=="__main__":
-	invoice_info = json.load(open("sample_invoice.json",'r'))
-	df = pd.read_csv('z_sample_prod_data.csv')
-	sr1 = df["QTY"]*df["RATE"]*(1. + df["GST"]/100)
-	sr1.name = "AMOUNT"
-	#print(sr1)
-	df["AMOUNT"] = sr1.round(2)
-	#print(df)
-	invoice_info["bill_df_ren"] = df
+def get_footer(doc_info, inv_table):
 	taxes = []
-	for tax in df.GST.unique():
-		temp = df[df['GST']==tax]
+	for tax in inv_table.GST.unique():
+		temp = inv_table[inv_table['GST']==tax]
 		taxes.append([tax,temp['TAXABLE'].sum(),(temp['TAXABLE']*tax/100).sum()])
-	footer_info = json.load(open("sample_invoice.json",'r'))
-	footer_info["Taxes"] = taxes
-	show_cols = json.load(open("invoice_table_cols.json",'r'))
-	d1 = make_document(document_info, show_cols = show_cols)
-	d1.make_header()
-	d1.make_invoice_table(invoice_info, footer_info, show_cols)
-	d1.save('zz_sample_full',source=True,doc=False)
+	footer_info = {}
+	footer_info.update(dict(Taxes=taxes,
+						    TnC = doc_info["TnC"],
+						    bank_info=doc_info["bank_info"]))
+	return footer_info
+
+
+class the_main:
+	def execute(self, path=""):
+		import pandas as pd
+		df = pd.read_csv(f'{path}z_sample_prod_data.csv')
+		sr1 = df["QTY"]*df["RATE"]*(1. + df["GST"]/100)
+		sr1.name = "AMOUNT"
+		df["AMOUNT"] = sr1.round(2)
+		invoice_info["bill_df_ren"] = df
+		# taxes = []
+		# for tax in df.GST.unique():
+		# 	temp = df[df['GST']==tax]
+		# 	taxes.append([tax,temp['TAXABLE'].sum(),(temp['TAXABLE']*tax/100).sum()])
+		# footer_info = json.load(open(f"{path}sample_invoice.json",'r'))
+		footer_info = get_footer(document_info, df)
+		# footer_info["Taxes"] = taxes
+		# footer_info["TnC"] = document_info["TnC"]
+		# footer_info["bank_info"] = document_info["bank_info"]
+		d1 = make_document(document_info, show_cols = inv_cols)
+		d1.make_header()
+		d1.make_invoice_table(invoice_info, footer_info, inv_cols)
+		d1.save('zz_sample_full',source=True,doc=False)
+
+if __name__=="__main__":
+	tm = the_main()
+	tm.execute()

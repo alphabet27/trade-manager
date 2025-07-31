@@ -1,4 +1,5 @@
 from ui_builder import *
+import gen_report as rept
 
 db_conn = sqlb.get_connection()
 
@@ -8,6 +9,7 @@ class InvoiceView(UIBuilder):
 		self.fy_id = fy_id
 		self.parent = parent
 		self.db_conn = db_conn
+		self.add_mode = add_mode
 		self.billdata = billdata
 		self.trsc_type = trsc_type
 		root = ttk.Frame(parent.notebook)
@@ -27,10 +29,11 @@ class InvoiceView(UIBuilder):
 				if widget["text"] in ["Save"]:
 					widget["state"] = "disabled"
 		self.build()
-		alias = billdata.pop("ALIAS")
+		alias = billdata["ALIAS"]
 		self.custom_frames["search_block"].current_key.set("ALIAS")
 		self.custom_frames["search_block"].search_box.set(alias)
 		self.custom_frames["widget_block"].entry_dict.update(billdata)
+		del self.custom_frames["widget_block"].entry_dict["ALIAS"]
 		print(self.custom_frames["widget_block"].entry_dict)
 		self.custom_frames["widget_block"].labelize()
 		self.custom_frames["widget_block"].relabel()
@@ -41,6 +44,7 @@ class InvoiceView(UIBuilder):
 			self.custom_frames["search_block"].mode_button.config(state="disabled")
 
 	def add_tab(self, title, trsc_data, **kw):
+		self.db_conn.execute("SAVEPOINT trsc_form")
 		if not "BILL" in self.custom_frames["widget_block"].disabled:
 			self.custom_frames["widget_block"].disabled.append("BILL")
 			self.custom_frames["widget_block"].relabel()
@@ -75,23 +79,52 @@ class InvoiceView(UIBuilder):
 		self.add_tab("Edit Trsc", tr_data)
 
 	def on_delete(self):
-		print("Delete")
+		cursor = self.db_conn.cursor()
+		q = f"DELETE FROM {self.trsc_type}_fulldata_{self.fy_id} WHERE TID=?"
+		tr_data = self.custom_frames["create_treeview"].get_current(search_by=["SR_NO"])
+		sqlb.increment_stock(self.db_conn, tr_data, self.trsc_type, pop_null=True)
+		cursor.execute(q, (tr_data["TID"],))
+		self.db_conn.commit()
+		self.on_refresh()
 
 	def on_refresh(self):
 		self.custom_frames["create_treeview"].refill_table(reload_data=True)
 
-	def on_save(self):
+	def on_save(self, close_tab=False):
+		cursor = self.db_conn.cursor()
+		billdata = self.custom_frames["widget_block"].get_data()
+		self.custom_frames["search_block"].get_data()
+		alias = self.custom_frames["search_block"].output["ALIAS"]
+		billdata.update({"ALIAS":alias})
+		if self.add_mode:
+			sqlb.insert_row(cursor, f"{self.trsc_type}_billdata_{self.fy_id}", billdata)
+		else:
+			sqlb.update_rows(cursor, f"{self.trsc_type}_billdata_{self.fy_id}", "BILL", billdata)
 		if len(self.child_tabs)>0:
-			cnf = messagebox.askyesnocancel("Warning!", "Close Sub-Modules?")
+			cnf = messagebox.askyesnocancel("Warning!", "Close Sub-Modules? (Data will not be saved!)")
 			if cnf:
 				self.child_tabs[0].on_cancel()
 			else:
 				return
 		self.parent.db_conn.commit()
-		self.root.destroy()
+		if close_tab:
+			self.root.destroy()
 
 	def on_print(self):
-		print("Print")
+		self.on_save(False)
+		sel_ptr = self.custom_frames["search_block"]
+		table_ptr = self.custom_frames["create_treeview"]
+		billdata = self.custom_frames["widget_block"].get_data()
+		sel_ptr.get_data()
+		print("Printing bill =",billdata)
+		invoice_info = sqlb.get_invoice_data(self.db_conn, sel_ptr.output["ALIAS"], billdata)
+		print("customer_info =", invoice_info["customer_info"])
+		invoice_info["bill_df_ren"] = table_ptr.data
+		doc = rept.make_doc(rept.document_info, show_cols = rept.inv_cols)
+		doc.make_header()
+		footer_info = rept.get_footer(rept.document_info, table_ptr.data)
+		doc.make_invoice_table(invoice_info, footer_info, rept.inv_cols)
+		doc.save('zz_sample_full',source=True,doc=False)
 
 	def on_exit(self):
 		if len(self.child_tabs)>0:

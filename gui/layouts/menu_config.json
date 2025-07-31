@@ -12,6 +12,12 @@
         "Payments": {
             "Record Sale Payment": "SalePaymentForm",
             "Record Purchase Payment": "PurchasePaymentForm"
+        },
+        "Ledgers": {
+            "Ledger Sale" : "SaleLedger",
+            "Ledger Purchase" : "PurchaseLedger",
+            "GST Ledger Sale" : "SaleGSTLedger",
+            "GST Ledger Purchase" : "PurchaseGSTLedger"
         }
     }
 }

@@ -16,7 +16,7 @@ class TransactionForm(UIBuilder):
 		entry_dict.update({"BATCH":{"current":trsc_data["BATCH"], "values":[trsc_data["BATCH"]]}, "BAL":""})
 		temp_ptr = self.layout["custom_frames"]["entry_block"]
 		temp_ptr.update(dict(combos = ["BATCH"], entry_dict = entry_dict))
-		temp_ptr["disabled"] = ["TID", "BILL", "SR_NO", "PID", "EXPIRY", "MRP", "BAL"]
+		temp_ptr["disabled"] = ["TID", "BILL", "SR_NO", "PID", "EXPIRY", "MFG", "MRP", "BAL"]
 		if not add_mode:
 			self.prev_data = dict(PID = trsc_data["PID"], QTY = trsc_data["QTY"], BATCH = trsc_data["BATCH"], EXPIRY = trsc_data["EXPIRY"], MRP = trsc_data["MRP"])
 			sqlb.increment_stock(self.db_conn, self.prev_data, self.trsc_type)
@@ -25,12 +25,13 @@ class TransactionForm(UIBuilder):
 
 	def build(self):
 		super().build()
-		sel_ptr = self.custom_frames["search_block"]
-		sel_ptr.search_box.bind("<Return>", self.load_data)
-		sel_ptr.select_button.config(command = self.load_data)
-		pid = self.trsc_data["PID"]
-		sel_ptr.current_key.set("PID")
-		sel_ptr.search_box.set(pid)
+		pid, alias = (self.trsc_data["PID"], self.billdata["ALIAS"])
+		for key, value in {"search_block":["PID", pid], "history_party_sel":["ALIAS", alias], "history_fy_sel":["FY_ID", self.fy_id]}.items():
+			sel_ptr = self.custom_frames[key]
+			sel_ptr.search_box.bind("<Return>", self.load_data)
+			sel_ptr.select_button.config(command = self.load_data)
+			sel_ptr.current_key.set(value[0])
+			sel_ptr.search_box.set(value[1])
 		#
 		self.widgets["mode_label"].config(font=head_font)
 		self.widgets["history_label"].config(font=head_font)
@@ -42,16 +43,18 @@ class TransactionForm(UIBuilder):
 		if not self.add_mode:
 			self.load_data()
 
-	def on_save(self):
+	def on_save(self, also_commit=False):
 		cursor = self.db_conn.cursor()
 		row_data = self.main_form.get_data()
 		if self.add_mode:
 			del row_data["TID"]
 		stock_data = dict(PID = row_data["PID"], QTY = int(row_data["QTY"]), BATCH = row_data["BATCH"], EXPIRY = row_data["EXPIRY"], MRP = row_data["MRP"])
 		sqlb.deduct_stock(self.db_conn, stock_data, self.trsc_type, pop_null=True)
-		del row_data["BAL"]
+		del row_data["BAL"], row_data["MFG"], row_data["UNIT"]
 		sqlb.insert_row(self.db_conn, self.table_name, row_data)
-		self.db_conn.commit()
+		if also_commit:
+			self.db_conn.commit()
+		self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
 		self.root.destroy()
 
 	def quick_add(self):
@@ -73,7 +76,8 @@ class TransactionForm(UIBuilder):
 		batch_root.mainloop()
 
 	def on_cancel(self):
-		self.db_conn.rollback()
+		self.db_conn.execute("ROLLBACK to SAVEPOINT trsc_form;")
+		self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
 		self.root.destroy()
 
 	def load_data(self, event=None, **kw):
@@ -82,7 +86,7 @@ class TransactionForm(UIBuilder):
 		self.main_form.entry_dict["PID"] = data["PID"]
 		self.main_form.entry_dict["GST"] = data["GST_D"]
 		self.load_batch()
-		self.load_history()
+		self.load_history(data["PID"])
 
 	def load_batch(self, event=None):
 		self.custom_frames["search_block"].get_data()
@@ -103,8 +107,15 @@ class TransactionForm(UIBuilder):
 			self.main_form.entry_dict.update({"EXPIRY":"", "MRP":"", "BAL":""})
 		self.main_form.relabel()
 
-	def load_history(self):
-		print("Define load history")
+	def load_history(self, pid):
+		kw = dict(alias=None, fy_id = None)
+		for frame_name, key in [("history_party_sel", "ALIAS"), ("history_fy_sel", "FY_ID")]:
+			self.custom_frames[frame_name].get_data()
+			kw[key.lower()] = self.custom_frames[frame_name].output[key]
+		df = sqlb.get_history(self.db_conn, self.trsc_type, pid, **kw)
+		self.custom_frames["history_block"].data = df
+		self.custom_frames["history_block"].refill_table()
+
 
 if __name__=="__main__":
 	root = tk.Tk()

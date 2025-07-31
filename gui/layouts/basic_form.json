@@ -21,7 +21,7 @@
 					"class": "Button",
 					"text" : "Delete",
 					"command" : "on_delete",
-					"command_kwargs" : {},
+					"command_kwargs" : {"key":"PID"},
 					"grid" : {"row":2, "column":0, "sticky":"ne"}
 				},
 				{

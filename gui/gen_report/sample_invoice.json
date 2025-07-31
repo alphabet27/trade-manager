@@ -9,9 +9,9 @@
 	"Chq_No":"Chq_No",
 	"customer_info":{"PARTY_NAME":"Customer Name",
 					 "ADDRESS_LINE1":"Address Line 1",
-					 "ADDRESS_LINE1":"Address Line 2",
-					 "ADDRESS_LINE1":"Address Line 3",
-					 "ADDRESS_LINE1":"Address Line 4",
+					 "ADDRESS_LINE2":"Address Line 2",
+					 "ADDRESS_LINE3":"Address Line 3",
+					 "ADDRESS_LINE4":"Address Line 4",
 					 "STATE":"State",
 					 "GSTIN":"GSTIN_No."}
 }

@@ -1,5 +1,4 @@
-import json
-from table_fill import *
+from .table_fill import *
 
 def num_to_words(num):
 	fig_in_words = ''
@@ -44,15 +43,15 @@ def make_footer(table,footer_info,company_name):
 	sub_table.add_hline()
 	r7_01.append(sub_table)
 
-	for i in range(len(footer_info["TnC"])):
+	for i, tnc in enumerate(footer_info["TnC"]):
 		if not i==0:
-			r5_01.append(tex.LineBreak())
-		r5_01.append(footer_info["TnC"][i])
+			r5_01.append(tex.basic.SmallText(tex.LineBreak()))
+		r5_01.append(tex.basic.SmallText(tnc))
 
 	for key, val in footer_info["bank_info"].items():
 		if not key=='Bank':
-			r5_02.append(tex.LineBreak())
-		r5_02.append(key+' : '+str(val))
+			r5_02.append(tex.basic.SmallText(tex.LineBreak()))
+		r5_02.append(tex.basic.SmallText(key+' : '+str(val)))
 
 	line2 = tex.position.FlushRight(data="For "+company_name)
 	line2.append(tex.LineBreak())
@@ -91,7 +90,8 @@ def make_footer(table,footer_info,company_name):
 	table.add_hline(8,12)
 	table.add_row((c7_02,c4_06,""))
 	table.add_hline(8,12)
-	table.add_row((c7_02,c4_07,str(int(net_taxation["taxable"] + net_taxation["tax"]))))
+	table.add_row((c7_02,c4_04,""))
+	table.add_row((c7_02,c4_07,tex.basic.LargeText(str(int(net_taxation["taxable"] + net_taxation["tax"])))))
 	table.add_hline()
 	table.add_row((c3_08,c4_09,c5_11))
 	table.add_row((c3_09,c4_10,c5_12))

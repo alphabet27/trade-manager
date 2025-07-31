@@ -65,7 +65,7 @@
 		"entry_block":{
 			"class": "widget_block",
 			"entry_dict" : {},
-			"shape":[6,2],
+			"shape":[7,2],
 			"combos":[],
 			"grid" : {"row" : 3, "column" : 0, "sticky":"nw", "padx":20, "pady":10}
 		},

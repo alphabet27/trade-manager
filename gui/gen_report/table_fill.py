@@ -1,12 +1,12 @@
-import json
-import pandas as pd
-import pylatex as tex
+import textwrap
+from .table_info import *
 
 def line_endings(fill_line,tab_width=10,char_width=1):
 	fill_list = str(fill_line).split(' ')
 	occ_width = 0
 	nlines = 1
-	for word in fill_list:
+	for i in range(len(fill_list)):
+		word = fill_list[i]
 		if len(word)>tab_width:
 			#print('Too long word. May overfill')
 			pass
@@ -27,11 +27,13 @@ def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False
 	i = 0
 	while i in range(len(rendered_prod_df)):
 		prod_data = rendered_prod_df.iloc[i].to_dict()
-		row_data = tuple(prod_data.values())
-		for j, col_val enumerate(in row_data):
-			if len(col_val)>widths[j]:
-				row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
-		table.add_row(row_data)
+		row_data = list(prod_data.values())
+		# for j, col_val in enumerate(row_data):
+		# 	if len(str(col_val))>widths[j][1]:
+		# 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
+		for j in range(len(row_data)):
+			row_data[j] = tex.basic.SmallText(row_data[j])
+		table.add_row(tuple(row_data))
 		nlines = 1
 		for key,value in prod_data.items():
 			nlines = max([nlines,line_endings(value,tab_width=col_widths[key][1])])
@@ -50,6 +52,7 @@ def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False
 	return table
 
 if __name__=='__main__':
+	import pandas as pd
 	df = pd.read_csv('z_sample_prod_data.csv')
 	gmt_options = {'top':'5mm','left':'5mm','right':'5mm'}
 	doc = tex.Document(geometry_options = gmt_options)

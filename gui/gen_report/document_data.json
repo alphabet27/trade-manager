@@ -6,10 +6,19 @@
 	"company_address" :"Your Company Address",
 	"company_contact_info" :"Your Company Phone Number and Email",
 	"document_invoice_type" :"Tax Invoice",
+	"GSTIN NO.":"YOUR GSTIN NO",
+	"STATE CODE":"100",
 	"TnC" : ["Adhere to terms and conditions",
 			 "Adhere to terms and conditions",
 			 "Adhere to terms and conditions",
 			 "Adhere to terms and conditions",
 			 "Adhere to terms and conditions"],
+	"bank_info" : {
+		"Bank" : "Bank Name",
+		"Branch":"Bank Branch",
+		"IFSC" : "Bank IFSC Code",
+		"ACC NO":"ACC Number",
+		"M.S.M.E.":"MSME Code"
+	},
 	"invoice_table_cols":{"Env":["R", "L", "p", "p", "p", "p", "p", "p", "p", "p", "p", "R"], "widths":[6,41,11,10,15,14,9,14,15,12,10,23]}
 }

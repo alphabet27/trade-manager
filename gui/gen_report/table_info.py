@@ -1,9 +1,8 @@
 import json
 import pylatex as tex
-#from header_info import make_header
 
 def make_tabular_inv(doc,invoice_info):
-	customer_info = invoice_info["customer_info"]
+	customer_info = dict(invoice_info["customer_info"])
 	table = tex.Tabular(r"|R{6mm}|L{41mm}|p{11mm}|p{10mm}|p{15mm}|p{14mm}|p{9mm}|p{14mm}|p{15mm}|p{12mm}|p{10mm}|R{23mm}|",width=12)	#Not adding the width gives error as R{},L{},C{} are not standard LaTeX tabular specs.
 	table.add_hline()
 	r8_01 = tex.MultiRow(8,width='200pt',data='')
@@ -12,6 +11,11 @@ def make_tabular_inv(doc,invoice_info):
 	r2_02 = tex.MultiRow(2,width='200pt',data='')
 	r2_03 = tex.MultiRow(2,width='200pt',data='')
 	r2_04 = tex.MultiRow(2,width='200pt',data='')
+	customer_info["CONTACT"] = f"Contact :- {customer_info['CONTACT_NO1']}, {customer_info['EMAIL_ID']}"
+	customer_info["GSTIN_NO1"] = f"GSTIN_NO :- {customer_info['GSTIN_NO1']}, {customer_info['GSTIN_NO2']}"
+	customer_info["STATE"] = f"{customer_info['STATE']}, {customer_info['PINCODE']}"
+	for key in ["EMAIL_ID", "ACC_TYPE", "CONTACT_NO1", "CONTACT_NO2", "PINCODE", "GSTIN_NO2"]:
+		del customer_info[key]
 	for key,value in customer_info.items():
 		if not (key=='PARTY_NAME' or key=='ALIAS'):
 			r8_01.append(tex.LineBreak())

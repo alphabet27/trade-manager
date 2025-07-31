@@ -48,6 +48,8 @@ SELECT
 	s.PID,
 	p.PRODUCT_NAME,
 	p.HSN_CODE,
+	p.MFG,
+	p.UNIT,
 	s.GST,
 	s.QTY,
 	s.RATE,
@@ -79,5 +81,25 @@ VALUES
 DELETE FROM
 	table_name
 WHERE
-	col_value=?;
+	col_name=?;
 --%
+
+--%load_history=fy_id%alias%pid
+--%
+SELECT
+	fd.BILL, fd.QTY, fd.RATE, fd.DISC,
+	fd.GST, fd.BATCH, fd.EXPIRY, fd.MRP
+FROM
+	(
+	SELECT * FROM
+		fulldata_table fdt
+	WHERE
+		fdt.PID=?
+	) fd
+JOIN
+	billdata_table bd ON fd.BILL = bd.BILL
+WHERE
+	bd.ALIAS=?;
+--%
+
+

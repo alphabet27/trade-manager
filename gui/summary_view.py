@@ -1,8 +1,9 @@
 from ui_builder import *
+import tkinter.filedialog as filedialog
 
 db_conn = sqlb.get_connection()
 
-fy_query_str = "select * from fy_list order by FY_ID;"
+fy_query_str = "select * from fy_list order by FY_NAME;"
 trsc_query_str = sqlb.get_queries("view")["trsc_summary_fy_new"]
 
 def get_trsc_data(trsc_type, fy_id):
@@ -53,20 +54,29 @@ class SummaryView(UIBuilder):
 		self.add_tab("Add Mode", billdata = {"BILL":new_billno, "ALIAS":""}, add_mode=True)
 
 	def on_view(self):
-		billdata = self.custom_frames["create_treeview"].get_current(search_by=["BILL"])
-		del billdata["TAXABLE"], billdata["PARTY_NAME"]
+		fy_id = self.current_fy.get()
+		table_name = f"{self.trsc_type}_billdata_{fy_id}"
+		billdata = self.table_ptr.get_current(search_by=["BILL"])
+		billdata = sqlb.get_dict(self.db_conn, table_name, "BILL", billdata["BILL"])
 		self.add_tab("View Mode", billdata, view_mode=True)
 
 	def on_edit(self):
-		billdata = self.custom_frames["create_treeview"].get_current(search_by=["BILL"])
-		del billdata["TAXABLE"], billdata["PARTY_NAME"]
+		fy_id = self.current_fy.get()
+		table_name = f"{self.trsc_type}_billdata_{fy_id}"
+		billdata = self.table_ptr.get_current(search_by=["BILL"])
+		billdata = sqlb.get_dict(self.db_conn, table_name, "BILL", billdata["BILL"])
 		self.add_tab("Edit Mode", billdata)
 
 	def on_delete(self):
-		pass
+		raise Exception("Cannot Delete! Not defined")
 
 	def on_export(self):
-		pass
+		csv_files = [("CSV Files", "*.csv")]
+		fd = filedialog.asksaveasfile(initialdir=f'../reports/FY_Summary_{self.trsc_type}', filetypes=csv_files, defaultextension=csv_files)
+		if not fd is None:
+			self.custom_frames["create_treeview"].data.to_csv(fd, index=False)
+		else:
+			print("Recieved None!!")
 
 	def on_close(self):
 		if len(self.child_tabs)>0:
@@ -94,7 +104,7 @@ class SummaryView(UIBuilder):
 def SaleSummaryView(root, db_conn, title):
 	return SummaryView(root, "sale", db_conn, title)
 
-def PurchaseSummaryView(root, db_conn):
+def PurchaseSummaryView(root, db_conn, title):
 	return SummaryView(root, "purc", db_conn, title)
 
 if __name__=="__main__":

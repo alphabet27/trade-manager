@@ -2,14 +2,6 @@ from ui_builder import *
 
 db_conn = sqlb.get_connection()
 
-# def get_stock(db_conn, pid=None):
-# 	if pid is None:
-# 		df = sqlb.SQL_DataFrame(columns=["BATCH", "EXPIRY", "MRP", "BAL"], from_sql=False)
-# 		return df.set_index("BATCH")
-# 	else:
-# 		df = sqlb.SQL_DataFrame(con=db_conn, sql=f"select * from stock_db where PID={pid}")
-#		return df.set_index("BATCH")
-
 class BasicForm(UIBuilder):
 	def __init__(self, parent, db_conn, table_name, title, *args, combo_dict=None, disabled=None, layout_file="layouts/basic_form.json", **kwargs):
 		self.parent = parent
@@ -62,8 +54,15 @@ class BasicForm(UIBuilder):
 		self.ent_ptr.enable_entries()
 		self.widgets["mode_label"].config(text = "Edit Mode")
 
-	def on_delete(self):
-		print(f"Define delete from {self.table_name}")
+	def on_delete(self, key=None):
+		self.load_data()
+		cursor = self.db_conn.cursor()
+		value = self.custom_frames["search_block"].output[key]
+		del_query = sqlb.get_queries("delete_row")["table_name"]
+		del_query = del_query.replace("table_name", self.table_name)
+		del_query = del_query.replace("col_name", key)
+		cursor.execute(del_query, (value,))
+		self.db_conn.commit()
 
 	def on_save(self, commit=True, data_modif=None, **kw):
 		table_name = self.table_name
@@ -75,7 +74,7 @@ class BasicForm(UIBuilder):
 		if commit:
 			db_conn.commit()
 			self.main_form.disable_entries(disable_all=True)
-			self.mode_label.config(text = "Idle Mode")
+			self.widgets["mode_label"].config(text = "Idle Mode")
 
 	def on_cancel(self):
 		self.root.destroy()
@@ -83,8 +82,9 @@ class BasicForm(UIBuilder):
 def PartyForm(root, db_conn, title, *args, **kwargs):
 	pf = BasicForm(root, db_conn, "party_db", title, *args, combo_dict={"ACC_TYPE":{"current":"sale", "values":["sale","purc"]}}, disabled = ["ALIAS"], **kwargs)
 	pf.layout["title"] = "Party Form"
-	temp_ptr = pf.layout["custom_frames"]["search_block"]
-	temp_ptr["keys"] = ["ALIAS", "PARTY_NAME"]
+	pf.layout["custom_frames"]["search_block"]["keys"] = ["ALIAS", "PARTY_NAME"]
+	ctrl_ptr = pf.layout["frames"]["controls_frame"]["widgets"]
+	ctrl_ptr[2]["command_kwargs"]["key"] = "ALIAS"
 	temp_ptr = pf.layout["custom_frames"]["entry_block"]
 	temp_ptr["shape"] = [7,2]
 	pf.build()
@@ -95,8 +95,10 @@ def ProductForm(root, db_conn, title, *args, **kwargs):
 	pf.build()
 	return pf
 
-def make_fy(fy_data):
-	print(f"Make FY as \n{fy_data}")
+def make_fy(fy_data, sql_conn):
+	if not fy_data["FY_ID"].isalnum():
+		raise Exception("Cannot create FY!\nNeed Alpha-Numeric FY_ID without space!")
+	sqlb.create_fy(sql_conn, fy_data["FY_ID"], fy_data["FY_NAME"])
 	return fy_data
 
 def FyForm(root, db_conn, title, *args, **kwargs):
@@ -106,6 +108,8 @@ def FyForm(root, db_conn, title, *args, **kwargs):
 	pf.layout["custom_frames"]["search_block"]["keys"] = ["FY_ID", "FY_NAME"]
 	ctrl_ptr = pf.layout["frames"]["controls_frame"]["widgets"]
 	ctrl_ptr[3]["command_kwargs"]["data_modif"] = make_fy
+	ctrl_ptr[3]["command_kwargs"]["sql_conn"] = pf.db_conn
+	ctrl_ptr[2]["command_kwargs"]["state"] = "disabled"
 	pf.layout["title"] = "FY Form"
 	pf.build()
 	return pf
