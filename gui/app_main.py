@@ -1,8 +1,11 @@
 import sqlite3
+import logging
+import traceback
 from basic_forms import *
 from tkinter import messagebox
 from invoice_view import InvoiceView
 from transaction_form import TransactionForm
+from logging.handlers import RotatingFileHandler
 from summary_view import SaleSummaryView, PurchaseSummaryView
 
 class MainApplication:
@@ -123,10 +126,40 @@ class MainApplication:
             self.open_tabs["fy_independent"].discard(title)
         del self.tab_instances[title]
 
+def setup_logging():
+    # Create logger
+    logger = logging.getLogger('tkinter_errors')
+    logger.setLevel(logging.ERROR)
+    # Create file handler
+    handler = RotatingFileHandler(
+        'tkinter_errors.log',
+        maxBytes=1024*1024,  # 1MB
+        backupCount=5
+    )
+    handler.setFormatter(logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    ))
+    logger.addHandler(handler)
+    return logger
+
+error_logger = setup_logging()
+
+def handle_tkinter_error(exc_type, exc_value, exc_traceback):
+    # Format the error
+    error_msg = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    # Log to file
+    error_logger.error(f"Unhandled exception:\n{error_msg}")
+    # Optionally show user-friendly message
+    tk.messagebox.showerror(
+        "Error",
+        exc_value
+    )
+
 
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1022x695")
     app = MainApplication(root)
     #root.report_callback_exception = lambda exc=None,msg=None,tb=None : messagebox.showerror("Error",msg)
+    root.report_callback_exception = handle_tkinter_error
     root.mainloop()

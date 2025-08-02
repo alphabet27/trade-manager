@@ -23,7 +23,7 @@ class SummaryView(UIBuilder):
 		self.layout["title"] = title
 		self.db_conn = db_conn
 		self.trsc_type = trsc_type
-		self.current_fy = tk.StringVar(root)
+		self.current_fy = tk.StringVar(root, value="")
 		fr_ptr = self.layout["frames"]["fy_select"]["widgets"]
 		for i, fy_id in enumerate(fy_dict.keys()):
 			fr_ptr.append({"class": "Radiobutton",
@@ -42,7 +42,11 @@ class SummaryView(UIBuilder):
 		if len(self.child_tabs)!=0:
 			raise Exception("Found open Sub-Modules!")
 			return
-		self.parent._open_tab("InvoiceView", title = title, billdata = billdata, trsc_type = self.trsc_type, fy_id = self.current_fy.get(), no_bind=True, **kw)
+		fy_id = self.current_fy.get()
+		if fy_id=="":
+			raise Exception("Please Select an FY!")
+			return
+		self.parent._open_tab("InvoiceView", title = title, billdata = billdata, trsc_type = self.trsc_type, fy_id = fy_id, no_bind=True, **kw)
 		self.child_tabs.append(self.parent.tab_instances[title])
 		self.child_tabs[0].root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
 

@@ -1,5 +1,6 @@
 from ui_builder import *
 import gen_report as rept
+from tkinter import messagebox
 
 db_conn = sqlb.get_connection()
 
@@ -45,10 +46,23 @@ class InvoiceView(UIBuilder):
 
 	def add_tab(self, title, trsc_data, **kw):
 		self.db_conn.execute("SAVEPOINT trsc_form")
+		self.custom_frames["search_block"].get_data()
+		if self.custom_frames["search_block"].output is None:
+			self.db_conn.execute("RELEASE SAVEPOINT trsc_form")
+			raise Exception("Please select a party!!")
+			return
+		self.billdata["ALIAS"] = self.custom_frames["search_block"].output["ALIAS"]
 		if not "BILL" in self.custom_frames["widget_block"].disabled:
+			billno = self.custom_frames["widget_block"].BILL_e.get()
+			df = sqlb.SQL_DataFrame(con=self.db_conn, sql=f"SELECT * FROM {self.trsc_type}_billdata_{self.fy_id} WHERE BILL=?", params=(billno,))
+			if len(df)>0 and self.trsc_type=="sale":
+				self.db_conn.execute("RELEASE SAVEPOINT trsc_form")
+				raise Exception("Bill Number Exists!!")
+				return
 			self.custom_frames["widget_block"].disabled.append("BILL")
 			self.custom_frames["widget_block"].relabel()
 		if len(self.child_tabs)!=0:
+			self.db_conn.execute("RELEASE SAVEPOINT trsc_form")
 			raise Exception("Found open Sub-Modules!")
 			return
 		self.parent._open_tab("TransactionForm", title = title, billdata = self.billdata, trsc_type = self.trsc_type, fy_id = self.fy_id, trsc_data = trsc_data, no_bind=True, **kw)

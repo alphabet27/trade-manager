@@ -1,0 +1,131 @@
+2025-08-02 09:34:54,021 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/ui_builder.py", line 43, in <lambda>
+    widget.config(command = lambda kw = widget_data["command_kwargs"]: getattr(self, widget_data["command"])(**kw))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 86, in on_add
+    self.add_tab("Add Trsc", tr_data, add_mode=True)
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 54, in add_tab
+    raise Exception("Bill Number Exists!!")
+Exception: Bill Number Exists!!
+
+2025-08-02 09:35:14,401 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/ui_builder.py", line 43, in <lambda>
+    widget.config(command = lambda kw = widget_data["command_kwargs"]: getattr(self, widget_data["command"])(**kw))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 86, in on_add
+    self.add_tab("Add Trsc", tr_data, add_mode=True)
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 65, in add_tab
+    raise Exception("Found open Sub-Modules!")
+Exception: Found open Sub-Modules!
+
+2025-08-02 09:36:23,702 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 47, in <lambda>
+    self.child_tabs[0].root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
+                                                                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 102, in _on_tab_close
+    self.toogle_fy()
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 95, in toogle_fy
+    self.custom_frames["create_treeview"].refill_table()
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/show_table.py", line 43, in refill_table
+    self.clear_table()
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/show_table.py", line 52, in clear_table
+    self.delete(*self.get_children())
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tkinter/ttk.py", line 1195, in get_children
+    self.tk.call(self._w, "children", item or '') or ())
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_tkinter.TclError: invalid command name ".!notebook.!frame.!frame4.!create_treeview"
+
+2025-08-02 09:36:57,322 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/home/mdzaeem/Workfiles/trade-manager/lib/python3.11/site-packages/pandas/io/sql.py", line 2674, in execute
+    cur.execute(sql, *args)
+sqlite3.OperationalError: no such table: sale_billdata_
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 47, in <lambda>
+    self.child_tabs[0].root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
+                                                                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 102, in _on_tab_close
+    self.toogle_fy()
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 93, in toogle_fy
+    curr_data = get_trsc_data(self.trsc_type, fy_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 14, in get_trsc_data
+    return sqlb.SQL_DataFrame(sql=q1, con=db_conn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/sql_backend.py", line 122, in __init__
+    super().__init__(pd.read_sql(*args, **kwargs))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/lib/python3.11/site-packages/pandas/io/sql.py", line 706, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/lib/python3.11/site-packages/pandas/io/sql.py", line 2738, in read_query
+    cursor = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/lib/python3.11/site-packages/pandas/io/sql.py", line 2686, in execute
+    raise ex from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT
+    sb.BILL,
+    sb.INVOICE_DATE,
+    sb.ALIAS,
+    p.PARTY_NAME,
+    sb.NARR,
+    SUM(sf.QTY * sf.RATE) AS "TAXABLE"
+FROM
+    sale_billdata_ sb
+JOIN
+    party_db p ON sb.ALIAS = p.ALIAS
+LEFT JOIN
+    sale_fulldata_ sf ON sb.BILL = sf.BILL
+GROUP BY
+    sb.BILL, sb.INVOICE_DATE, p.PARTY_NAME, sb.NARR
+ORDER BY
+    sb.BILL ASC;
+': no such table: sale_billdata_
+
+2025-08-02 09:39:57,973 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/ui_builder.py", line 43, in <lambda>
+    widget.config(command = lambda kw = widget_data["command_kwargs"]: getattr(self, widget_data["command"])(**kw))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 86, in on_add
+    self.add_tab("Add Trsc", tr_data, add_mode=True)
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 54, in add_tab
+    raise Exception("Bill Number Exists!!")
+Exception: Bill Number Exists!!
+
+2025-08-02 09:40:03,816 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/ui_builder.py", line 43, in <lambda>
+    widget.config(command = lambda kw = widget_data["command_kwargs"]: getattr(self, widget_data["command"])(**kw))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 86, in on_add
+    self.add_tab("Add Trsc", tr_data, add_mode=True)
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/invoice_view.py", line 65, in add_tab
+    raise Exception("Please select a party!!")
+Exception: Please select a party!!
+
