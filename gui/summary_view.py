@@ -1,4 +1,5 @@
 from ui_builder import *
+from tkinter.simpledialog import askinteger
 import tkinter.filedialog as filedialog
 
 db_conn = sqlb.get_connection()
@@ -52,9 +53,13 @@ class SummaryView(UIBuilder):
 
 	def on_add(self):
 		if len(self.table_ptr.data)>0:
-			new_billno = int(self.table_ptr.data["BILL"].max() + 1)
+			temp = int(self.table_ptr.data["BILL"].max() + 1)
 		else:
-			new_billno = 1
+			temp = 1
+		new_billno = askinteger("Bill No.", "Enter Bill Number : ", initialvalue = temp)
+		if new_billno is None:
+			print("No bill will be created!")
+			return
 		self.add_tab("Add Mode", billdata = {"BILL":new_billno, "ALIAS":""}, add_mode=True)
 
 	def on_view(self):

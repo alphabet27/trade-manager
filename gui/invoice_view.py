@@ -15,13 +15,13 @@ class InvoiceView(UIBuilder):
 		self.trsc_type = trsc_type
 		root = ttk.Frame(parent.notebook)
 		super().__init__(root, layout_file="layouts/individual_view.json")
-		if add_mode:
-			self.layout["custom_frames"]["widget_block"]["disabled"] = []
-			del self.layout["custom_frames"]["create_treeview"]["params"]
-		else:
-			self.layout["custom_frames"]["create_treeview"]["from_sql"] = True
-			self.layout["custom_frames"]["create_treeview"]["params"] = (billdata["BILL"],)
-			self.layout["custom_frames"]["create_treeview"]["sql"] = sqlb.get_transactions_query(self.trsc_type, self.fy_id)
+		# if add_mode:
+		# 	self.layout["custom_frames"]["widget_block"]["disabled"] = ["BILL"]
+		# 	del self.layout["custom_frames"]["create_treeview"]["params"]
+		# else:
+		self.layout["custom_frames"]["create_treeview"]["from_sql"] = True
+		self.layout["custom_frames"]["create_treeview"]["params"] = (billdata["BILL"],)
+		self.layout["custom_frames"]["create_treeview"]["sql"] = sqlb.get_transactions_query(self.trsc_type, self.fy_id)
 		if view_mode:
 			frame_ptr = self.layout["frames"]
 			for widget in frame_ptr["controls_1"]["widgets"]:

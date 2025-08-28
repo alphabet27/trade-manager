@@ -50,7 +50,10 @@ class TransactionForm(UIBuilder):
 			del row_data["TID"]
 		stock_data = dict(PID = row_data["PID"], QTY = int(row_data["QTY"]), BATCH = row_data["BATCH"], EXPIRY = row_data["EXPIRY"], MRP = row_data["MRP"])
 		sqlb.deduct_stock(self.db_conn, stock_data, self.trsc_type, pop_null=True)
-		del row_data["BAL"], row_data["MFG"], row_data["UNIT"]
+		for key in list(row_data.keys()):
+			if key in ["BAL", "MFG", "UNIT"]:
+				del row_data[key]
+				#del row_data["BAL"], row_data["MFG"], row_data["UNIT"]
 		sqlb.insert_row(self.db_conn, self.table_name, row_data)
 		if also_commit:
 			self.db_conn.commit()
@@ -81,10 +84,13 @@ class TransactionForm(UIBuilder):
 		self.root.destroy()
 
 	def load_data(self, event=None, **kw):
+		old_data = self.main_form.get_data()
 		self.custom_frames["search_block"].get_data()
 		data = dict(self.custom_frames["search_block"].output)
 		self.main_form.entry_dict["PID"] = data["PID"]
 		self.main_form.entry_dict["GST"] = data["GST_D"]
+		for key in ["QTY", "RATE", "DISC", "GST"]:
+			self.main_form.entry_dict[key] = old_data[key]
 		self.load_batch()
 		self.load_history(data["PID"])
 
