@@ -147,7 +147,7 @@ class InvoiceView(UIBuilder):
 				self.child_tabs[0].on_cancel()
 			else:
 				return
-		self.parent.db_conn.rollback()
+		self.parent.db_conn.execute("ROLLBACK TO invoice_modif")
 		self.root.destroy()
 
 if __name__=="__main__":

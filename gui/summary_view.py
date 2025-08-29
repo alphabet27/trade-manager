@@ -47,6 +47,7 @@ class SummaryView(UIBuilder):
 		if fy_id=="":
 			raise Exception("Please Select an FY!")
 			return
+		self.parent.db_conn.execute("SAVEPOINT invoice_modif")
 		self.parent._open_tab("InvoiceView", title = title, billdata = billdata, trsc_type = self.trsc_type, fy_id = fy_id, no_bind=True, **kw)
 		self.child_tabs.append(self.parent.tab_instances[title])
 		self.child_tabs[0].root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
@@ -106,6 +107,7 @@ class SummaryView(UIBuilder):
 		self.root.update()
 
 	def _on_tab_close(self, title):
+		self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
 		self.parent._on_tab_close(title)
 		self.child_tabs = []
 		self.toogle_fy()

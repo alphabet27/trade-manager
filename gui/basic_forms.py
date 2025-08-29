@@ -82,7 +82,9 @@ class BasicForm(UIBuilder):
 def PartyForm(root, db_conn, title, *args, **kwargs):
 	pf = BasicForm(root, db_conn, "party_db", title, *args, combo_dict={"ACC_TYPE":{"current":"sale", "values":["sale","purc"]}}, disabled = ["ALIAS"], **kwargs)
 	pf.layout["title"] = "Party Form"
-	pf.layout["custom_frames"]["search_block"]["keys"] = ["ALIAS", "PARTY_NAME"]
+	sel_ptr = pf.layout["custom_frames"]["search_block"]
+	sel_ptr["sql_query"] += "order by ALIAS"
+	sel_ptr["keys"] = ["ALIAS", "PARTY_NAME"]
 	ctrl_ptr = pf.layout["frames"]["controls_frame"]["widgets"]
 	ctrl_ptr[2]["command_kwargs"]["key"] = "ALIAS"
 	temp_ptr = pf.layout["custom_frames"]["entry_block"]
@@ -92,6 +94,8 @@ def PartyForm(root, db_conn, title, *args, **kwargs):
 
 def ProductForm(root, db_conn, title, *args, **kwargs):
 	pf = BasicForm(root, db_conn, "product_db", title, *args, disabled = ["PID"], **kwargs)
+	sel_ptr = pf.layout["custom_frames"]["search_block"]
+	sel_ptr["sql_query"] += "order by PID"
 	pf.build()
 	return pf
 

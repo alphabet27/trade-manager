@@ -64,7 +64,7 @@
 	"custom_frames":{
 		"search_block":{
 			"class": "selector",
-			"sql_query": "select * from party_db where ACC_TYPE='sale';",
+			"sql_query": "select * from party_db where ACC_TYPE='sale' order by ALIAS;",
 			"keys":["ALIAS","PARTY_NAME"],
 			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
 		},

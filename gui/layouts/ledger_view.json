@@ -1,0 +1,62 @@
+{
+	"title": "Ledger Generator",
+	"frames":{
+		"fy_select":{
+			"widgets":[
+				{
+					"class": "Label",
+					"text" : "Choose FY",
+					"grid" : {"row":0, "column":0, "sticky":"w", "padx":10}
+				},
+				{
+					"class" :"Separator",
+					"orient":"vertical",
+					"grid" : {"row":0, "column":1, "rowspan":10, "padx":10, "sticky":"nsw"}
+				}
+			],
+			"grid" : {"row":1, "column":0, "rowspan":5, "sticky":"nsew", "padx":10}
+		},
+		"controls_1":{
+			"widgets":[
+				{
+					"class":"Button",
+					"text" :"Export List",
+					"command": "on_export",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":0, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Refresh",
+					"command": "toogle_fy",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":1, "padx":1, "pady":10}
+				},
+				{
+					"class":"Button",
+					"text" :"Close",
+					"command": "on_close",
+					"command_kwargs":{},
+					"grid":{"row":0, "column":2, "padx":1, "pady":10}
+				}
+			],
+			"grid":{"row":3, "column":2, "sticky":"e"}
+		}
+	},
+	"custom_frames":{
+		"search_block":{
+			"class": "selector",
+			"sql_query": "select * from party_db where ACC_TYPE='sale' order by ALIAS;",
+			"keys":["ALIAS","PARTY_NAME"],
+			"grid":{"row" : 1, "column" : 2, "sticky":"nw", "padx":20, "columnspan":2}
+		},
+		"create_treeview" : {
+			"class" : "create_treeview",
+			"from_sql" : false,
+			"columns" : ["BILL","INVOICE_DATE", "ALIAS","PARTY_NAME", "TAXABLE","NARR"],
+			"widths" : {"BILL" : 4, "INVOICE_DATE":10, "ALIAS":10,
+						"PARTY_NAME": 200, "TAXABLE": 60,"NARR" : 100},
+			"grid":{"row":2, "column":1, "columnspan":2, "sticky":"nsew"}
+		}
+	}
+}

@@ -58,7 +58,7 @@
 	"custom_frames":{
 		"search_block":{
 			"class": "selector",
-			"sql_query": "select * from product_db;",
+			"sql_query": "select * from product_db order by PID;",
 			"keys":["PID","PRODUCT_NAME"],
 			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
 		},
