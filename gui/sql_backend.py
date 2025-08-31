@@ -84,6 +84,10 @@ def add_csv_data(db_conn, file_path, table_name):
 		insert_row(cursor, table_name, row)
 	db_conn.commit()
 
+def export_to_csv(db_conn, file_path, sql):
+	df = SQL_DataFrame(sql=sql, con=db_conn)
+	df.to_csv(file_path, index=False)
+
 def get_transactions_query(trsc_type, fy_id):
 	queries = get_queries("view")
 	sql = queries["transaction_summary_billno"]
