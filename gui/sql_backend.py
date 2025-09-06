@@ -6,6 +6,11 @@ db_path = "../database/"
 def get_connection():
 	return sqlite3.connect(db_path + "inventory.db")
 
+def get_savepoints(db_conn):
+	cursor = db_conn.cursor()
+	cursor.execute("PRAGMA savepoint_list")
+	return cursor.fetchall()
+
 def get_queries(key, qfile = "queries.sql"):
 	query_file = open(db_path + qfile, "r")
 	q_temp = "".join(query_file.readlines()).split('--%' + key + '=')
@@ -97,16 +102,16 @@ def get_transactions_query(trsc_type, fy_id):
 
 def get_pandas_table(table_name, *args, **kwargs):
 	db_conn = get_connection()
-	sql = f"select * from ?;"
-	return SQL_DataFrame(sql, db_conn, *args, params=table_name, **kwargs)
+	sql = f"select * from {table_name};"
+	return SQL_DataFrame(sql, db_conn, *args, **kwargs)
 
 def insert_row(cursor, table_name, row_data):
 	q = get_queries("add_to_table")["table_name%new_row"]
 	q = q.replace("table_name", table_name)
 	q = q.replace("cols", f"({', '.join(list(row_data.keys()))})")
 	q = q.replace("new_row", f"({', '.join(['?']*len(row_data))})")
-	print(f"Inserting into {table_name} - {list(row_data.values())}")
-	print(q, "\n", list(row_data.values()))
+	#print(f"Inserting into {table_name} - {list(row_data.values())}")
+	#print(q, "\n", list(row_data.values()))
 	cursor.execute(q, tuple(row_data.values()))
 
 def update_rows(cursor, table_name, prime_key, row_data):

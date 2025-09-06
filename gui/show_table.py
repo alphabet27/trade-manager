@@ -37,9 +37,11 @@ class create_treeview(ttk.Treeview):
 		self.refill_table()
 		self.bind("<Button-3>", self.right_click_menu)
 
-	def refill_table(self, reload_data=False):
+	def refill_table(self, reload_data=False, use_con=None):
 		if reload_data:
 			self.data = sqlb.SQL_DataFrame(sql=self.sql, **self.kwargs)
+			if not use_con is None:
+				self.kwargs["con"] = use_con
 		self.clear_table()
 		for i, row in self.data.iterrows():
 			temp1 = row.to_dict()

@@ -129,3 +129,29 @@ Traceback (most recent call last):
     raise Exception("Please select a party!!")
 Exception: Please select a party!!
 
+2025-09-06 10:30:30,973 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 53, in <lambda>
+    self.child_tabs[0].root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
+                                                                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 110, in _on_tab_close
+    self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
+sqlite3.OperationalError: no such savepoint: invoice_modif
+
+2025-09-06 10:30:44,074 - tkinter_errors - ERROR - Unhandled exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/tkinter/__init__.py", line 1948, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/ui_builder.py", line 43, in <lambda>
+    widget.config(command = lambda kw = widget_data["command_kwargs"]: getattr(self, widget_data["command"])(**kw))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 78, in on_edit
+    self.add_tab("Edit Mode", billdata)
+  File "/home/mdzaeem/Workfiles/trade-manager/trade-manager/gui/summary_view.py", line 44, in add_tab
+    raise Exception("Found open Sub-Modules!")
+Exception: Found open Sub-Modules!
+

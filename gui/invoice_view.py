@@ -102,9 +102,9 @@ class InvoiceView(UIBuilder):
 		self.on_refresh()
 
 	def on_refresh(self):
-		self.custom_frames["create_treeview"].refill_table(reload_data=True)
+		self.custom_frames["create_treeview"].refill_table(reload_data=True, use_con=self.db_conn)
 
-	def on_save(self, close_tab=False):
+	def on_save(self, close_tab=True):
 		cursor = self.db_conn.cursor()
 		billdata = self.custom_frames["widget_block"].get_data()
 		self.custom_frames["search_block"].get_data()
@@ -147,7 +147,6 @@ class InvoiceView(UIBuilder):
 				self.child_tabs[0].on_cancel()
 			else:
 				return
-		self.parent.db_conn.execute("ROLLBACK TO invoice_modif")
 		self.root.destroy()
 
 if __name__=="__main__":

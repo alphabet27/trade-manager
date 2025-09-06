@@ -57,7 +57,9 @@ class TransactionForm(UIBuilder):
 		sqlb.insert_row(self.db_conn, self.table_name, row_data)
 		if also_commit:
 			self.db_conn.commit()
+		print("Saving product with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
+		print("Saved product with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.root.destroy()
 
 	def quick_add(self):
@@ -79,8 +81,10 @@ class TransactionForm(UIBuilder):
 		batch_root.mainloop()
 
 	def on_cancel(self):
+		print("Discarding changes with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.db_conn.execute("ROLLBACK to SAVEPOINT trsc_form;")
 		self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
+		print("Discarding changes with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.root.destroy()
 
 	def load_data(self, event=None, **kw):
@@ -95,6 +99,7 @@ class TransactionForm(UIBuilder):
 		self.load_history(data["PID"])
 
 	def load_batch(self, event=None):
+		old_data = self.main_form.get_data()
 		self.custom_frames["search_block"].get_data()
 		data = dict(self.custom_frames["search_block"].output)
 		pid = data["PID"]
@@ -111,6 +116,8 @@ class TransactionForm(UIBuilder):
 			self.main_form.entry_dict.update(vals)
 		else:
 			self.main_form.entry_dict.update({"EXPIRY":"", "MRP":"", "BAL":""})
+		for key in ["QTY", "RATE", "DISC", "GST"]:
+			self.main_form.entry_dict[key] = old_data[key]
 		self.main_form.relabel()
 
 	def load_history(self, pid):
