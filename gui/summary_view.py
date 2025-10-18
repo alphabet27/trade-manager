@@ -1,4 +1,5 @@
 from ui_builder import *
+from tkinter import messagebox
 from tkinter.simpledialog import askinteger
 import tkinter.filedialog as filedialog
 
@@ -107,7 +108,7 @@ class SummaryView(UIBuilder):
 		self.root.update()
 
 	def _on_tab_close(self, title):
-		self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
+		#self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
 		self.parent._on_tab_close(title)
 		self.child_tabs = []
 		self.toogle_fy()

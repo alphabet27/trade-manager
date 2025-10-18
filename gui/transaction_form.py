@@ -83,7 +83,7 @@ class TransactionForm(UIBuilder):
 	def on_cancel(self):
 		print("Discarding changes with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.db_conn.execute("ROLLBACK to SAVEPOINT trsc_form;")
-		self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
+		#self.db_conn.execute("RELEASE SAVEPOINT trsc_form;")
 		print("Discarding changes with savepoints = ",sqlb.get_savepoints(self.db_conn))
 		self.root.destroy()
 
