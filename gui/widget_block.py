@@ -111,16 +111,28 @@ if __name__=="__main__":
 		print("Only numeric value allowed")
 
 	ee = widget_block(root, my_data, combos=["Nationality"], disabled=["Age"], shape=[2,2])
+	ee.labelize()
 	ee.grid(row=0, column=0)
 
 	#ee.make_numeric('Age', allow_float=False, callback = my_callback)
 	def reset():
-		ee.entry_dict = my_data
+		global my_data
+		new_data = {"Name":my_data["Name"],
+					"Age New":my_data["Age"],
+					"Nationality":my_data["Nationality"]}
+		ee.entry_dict = new_data
+		ee.output = dict(new_data)
+		ee.labelize()
 		ee.relabel()
+		new_data = ee.get_data()
+		print(len(new_data))
 
 	#ee.disable_entries()
 
 	get_bn = tk.Button(root, text='Get Data', command=lambda:print(ee.get_data()))
 	get_bn.grid(row=1, column=2)
+
+	set_bn = tk.Button(root, text='Set Data', command=reset)
+	set_bn.grid(row=2, column=2)
 
 	root.mainloop()

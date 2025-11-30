@@ -1,5 +1,10 @@
 {
     "menu_bar": {
+        "App":{
+            "Backup": "Backup",
+            "Restart": "Restart",
+            "Exit": "Exit"
+        },
         "Setup": {
             "Party Manager": "PartyForm",
             "Product Manager": "ProductForm",

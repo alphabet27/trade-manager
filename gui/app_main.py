@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import logging
 import traceback
@@ -7,6 +8,22 @@ from invoice_view import InvoiceView
 from transaction_form import TransactionForm
 from logging.handlers import RotatingFileHandler
 from summary_view import SaleSummaryView, PurchaseSummaryView
+
+def Exit(app, **kw):
+    # app.root.destroy()
+    # if not 'respawn' in kw.keys():
+    #     kw["db_conn"].close()
+    #     _ = os.system("python app_main.py")
+    pass
+
+def Restart(app, **kw):
+    print("Restarting Database Connection")
+    try:
+        app.db_conn.close()
+        app.db_conn = sqlite3.connect("../database/inventory.db")
+    except:
+        messagebox.showerror("Error", "Failed to restart, exiting!")
+        #Exit(app, **kw)
 
 class MainApplication:
     def __init__(self, root):
@@ -100,14 +117,16 @@ class MainApplication:
     def _get_class_by_name(self, class_name):
         # This would map to actual imported classes
         classes = {
+            "Exit": Exit,
             "FYForm": FyForm,
+            "Restart": Restart,
             "PartyForm": PartyForm,
             "ProductForm": ProductForm,
             "InvoiceView" : InvoiceView,
             "TransactionForm": TransactionForm,
             "SaleSummaryView": SaleSummaryView,
-            "PurchaseSummaryView": PurchaseSummaryView,
             "SalePaymentForm": "", #SalePaymentForm,
+            "PurchaseSummaryView": PurchaseSummaryView,
             "PurchasePaymentForm": "", #PurchasePaymentForm
         }
         return classes.get(class_name)

@@ -4,6 +4,19 @@ from tkinter import messagebox
 
 db_conn = sqlb.get_connection()
 
+def get_taxables(df):
+	tax_list = df.GST.unique()
+	taxables = {}
+	for i, tax in enumerate(tax_list):
+		sub_df = df[df.GST==tax]
+		taxables[f"Taxable {tax:.2f}"] = (sub_df.QTY*sub_df.RATE*(1 - sub_df.DISC/100)).sum()
+		taxables[f"Taxable {tax:.2f}"] = round(taxables[f"Taxable {tax:.2f}"], 2)
+		taxables[f"Tax {tax:.2f}"] = taxables[f"Taxable {tax:.2f}"]*tax/100
+		if i>4:
+			messagebox.showerror("Info", "Too many taxes! Showing first 4")
+			break
+	return taxables
+
 class InvoiceView(UIBuilder):
 	def __init__(self, parent, trsc_type, fy_id, billdata, *args, db_conn = db_conn, add_mode=False, view_mode=False, **kwargs):
 		table_name = f"{trsc_type}_billdata_{fy_id}"
@@ -36,8 +49,9 @@ class InvoiceView(UIBuilder):
 		self.custom_frames["widget_block"].entry_dict.update(billdata)
 		del self.custom_frames["widget_block"].entry_dict["ALIAS"]
 		print(self.custom_frames["widget_block"].entry_dict)
-		self.custom_frames["widget_block"].labelize()
-		self.custom_frames["widget_block"].relabel()
+		for wb_name in ["widget_block", "info_block_1", "info_block_2"]:
+			self.custom_frames[wb_name].labelize()
+			self.custom_frames[wb_name].relabel()
 		self.child_tabs = []
 		#
 		if view_mode:
@@ -103,6 +117,15 @@ class InvoiceView(UIBuilder):
 
 	def on_refresh(self):
 		self.custom_frames["create_treeview"].refill_table(reload_data=True, use_con=self.db_conn)
+		taxables = get_taxables(self.custom_frames["create_treeview"].data)
+		info_ptr = self.custom_frames["info_block_1"]
+		info_ptr.entry_dict = dict(taxables)
+		info_ptr.disabled = list(taxables.keys())
+		info_ptr.output = dict(taxables)
+		self.custom_frames["info_block_2"].entry_dict.update({"Grand Total":sum(info_ptr.entry_dict.values())})
+		for ptr in ["info_block_1", "info_block_2"]:
+			self.custom_frames[ptr].labelize()
+			self.custom_frames[ptr].relabel()
 
 	def on_save(self, close_tab=True):
 		cursor = self.db_conn.cursor()
@@ -151,8 +174,9 @@ class InvoiceView(UIBuilder):
 
 if __name__=="__main__":
 	root = tk.Tk()
+	root.geometry("1200x600")
 	root.notebook = ttk.Notebook(root)
 	root.notebook.pack(expand=True, fill="both")
-	inv = InvoiceView(root, "sale", "fy_25", {"BILL":1, "ALIAS":"alias04", "INVOICE_DATE":"05/08/2024"})
+	inv = InvoiceView(root, "sale", "fy_25", {"BILL":2, "ALIAS":"Sujay", "INVOICE_DATE":"05/08/2024"})
 	inv.root.pack(expand=True, fill="both")
 	root.mainloop()

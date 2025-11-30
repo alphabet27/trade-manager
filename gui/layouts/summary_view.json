@@ -80,9 +80,9 @@
 		"create_treeview":{
 			"class" : "create_treeview",
 			"from_sql" : false,
-			"columns" : ["BILL","INVOICE_DATE", "ALIAS","PARTY_NAME", "TAXABLE","NARR"],
+			"columns" : ["BILL","INVOICE_DATE", "ALIAS","PARTY_NAME", "AMOUNT","NARR"],
 			"widths" : {"BILL" : 4, "INVOICE_DATE":10, "ALIAS":10,
-						"PARTY_NAME": 200, "TAXABLE": 60,"NARR" : 100},
+						"PARTY_NAME": 200, "AMOUNT": 60,"NARR" : 100},
 			"grid":{"row":1, "column":1, "columnspan":2, "sticky":"nsew"}
 		}
 	}

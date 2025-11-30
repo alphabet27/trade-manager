@@ -6,7 +6,7 @@ SELECT
     sb.ALIAS,
     p.PARTY_NAME,
     sb.NARR,
-    SUM(sf.QTY * sf.RATE) AS "TAXABLE"
+    ROUND(SUM(sf.QTY*sf.RATE - sf.QTY*sf.RATE*sf.DISC/100 + sf.QTY*sf.RATE*sf.GST/100 - sf.QTY*sf.RATE*sf.DISC*sf.GST/10000), 2) AS "AMOUNT"
 FROM
     trsc_billdata_fy sb
 JOIN
@@ -14,7 +14,7 @@ JOIN
 LEFT JOIN
     trsc_fulldata_fy sf ON sb.BILL = sf.BILL
 GROUP BY
-    sb.BILL, sb.INVOICE_DATE, p.PARTY_NAME, sb.NARR
+    sb.BILL --, sb.INVOICE_DATE, p.PARTY_NAME, sb.NARR
 ORDER BY
     sb.BILL ASC;
 --%
@@ -54,7 +54,7 @@ SELECT
 	s.QTY,
 	s.RATE,
 	s.DISC,
-	s.QTY * s.RATE * (1 - (s.DISC)/100) AS "TAXABLE",
+	(s.QTY*s.RATE  - s.QTY*s.RATE*s.DISC/100) AS "TAXABLE",
 	s.BATCH,
 	s.EXPIRY,
 	s.MRP

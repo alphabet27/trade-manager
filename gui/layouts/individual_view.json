@@ -32,7 +32,7 @@
 					"grid":{"row":0, "column":4, "padx":1, "pady":10}
 				}
 			],
-			"grid":{"row":3, "column":0, "sticky":"w"}
+			"grid":{"row":5, "column":0, "sticky":"w"}
 		},
 		"controls_2":{
 			"widgets":[
@@ -58,7 +58,7 @@
 					"grid":{"row":0, "column":2, "padx":1, "pady":10}
 				}
 			],
-			"grid":{"row":3, "column":2, "sticky":"e"}
+			"grid":{"row":5, "column":2, "sticky":"e"}
 		}
 	},
 	"custom_frames":{
@@ -85,6 +85,20 @@
 			"disabled":["BILL"],
 			"shape":[4,2],
 			"grid":{"row":1, "column":1, "padx":20, "columnspan":2, "sticky":"w"}
+		},
+		"info_block_1":{
+			"class": "widget_block",
+			"entry_dict": {"Taxable 1":"", "Tax 1":"", "Taxable 2":"", "Tax 2":"", "Taxable 3":"", "Tax 3":"", "Taxable 4":"", "Tax 4":""},
+			"disabled":["Taxable 1", "Taxable 2", "Taxable 3", "Taxable 4", "Tax 1", "Tax 2", "Tax 3", "Tax 4"],
+			"shape":[2,4],
+			"grid":{"row":3, "column":0, "columnspan":3, "sticky":"nsew"}
+		},
+		"info_block_2":{
+			"class": "widget_block",
+			"entry_dict": {"Grand Total":""},
+			"disabled":["Grand Total"],
+			"shape":[1,1],
+			"grid":{"row":4, "column":0, "columnspan":3, "sticky":"nsew"}
 		}
 	}
 }

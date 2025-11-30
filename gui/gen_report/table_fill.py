@@ -1,6 +1,8 @@
 import textwrap
 from .table_info import *
 
+tiny_cols = [3, 4]
+
 def line_endings(fill_line,tab_width=10,char_width=1):
 	fill_list = str(fill_line).split(' ')
 	occ_width = 0
@@ -18,6 +20,7 @@ def line_endings(fill_line,tab_width=10,char_width=1):
 	return nlines
 
 def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False):
+	global tiny_cols
 	widths = list(col_widths.values())
 	first_row = [temp[0] for temp in widths]
 	print("first_row",col_widths.keys())
@@ -28,11 +31,14 @@ def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False
 	while i in range(len(rendered_prod_df)):
 		prod_data = rendered_prod_df.iloc[i].to_dict()
 		row_data = list(prod_data.values())
-		# for j, col_val in enumerate(row_data):
-		# 	if len(str(col_val))>widths[j][1]:
-		# 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
+		for j, col_val in enumerate(row_data):
+		 	if len(str(col_val))>widths[j][1]:
+		 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
 		for j in range(len(row_data)):
-			row_data[j] = tex.basic.SmallText(row_data[j])
+			if j+1 in tiny_cols:
+				row_data[j] = tex.NoEscape("\\begin{tiny}" + str(row_data[j]).replace("_", "\\_") + "\\end{tiny}")
+			else:
+				row_data[j] = tex.basic.SmallText(row_data[j])
 		table.add_row(tuple(row_data))
 		nlines = 1
 		for key,value in prod_data.items():
