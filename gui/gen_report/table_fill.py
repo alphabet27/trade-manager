@@ -1,7 +1,21 @@
 import textwrap
 from .table_info import *
 
-tiny_cols = [3, 4]
+footnote_cols = [3, 4]
+forbidden_chars = ['&', '%', '$', '#', '_', '{', '}', '~', '^']
+
+def get_escape(str_escape, forbidden=forbidden_chars):
+	for fc in forbidden:
+		str_escape = str_escape.replace(fc, f"\\{fc}")
+	return str_escape
+
+def major_env(env_name, content, forbidden=forbidden_chars):
+	content = get_escape(content, forbidden=forbidden_chars)
+	return tex.NoEscape(f"\\begin{{{env_name}}}\n{content}\n\\end{{{env_name}}}")
+
+def minor_env(env_name, content, forbidden=forbidden_chars):
+	content = get_escape(content, forbidden=forbidden)
+	return tex.NoEscape(f"{{\\{env_name} {content} }}")
 
 def line_endings(fill_line,tab_width=10,char_width=1):
 	fill_list = str(fill_line).split(' ')
@@ -35,8 +49,8 @@ def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False
 		 	if len(str(col_val))>widths[j][1]:
 		 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
 		for j in range(len(row_data)):
-			if j+1 in tiny_cols:
-				row_data[j] = tex.NoEscape("\\begin{tiny}" + str(row_data[j]).replace("_", "\\_") + "\\end{tiny}")
+			if j+1 in footnote_cols:
+				row_data[j] = minor_env("footnotesize", str(row_data[j]))
 			else:
 				row_data[j] = tex.basic.SmallText(row_data[j])
 		table.add_row(tuple(row_data))

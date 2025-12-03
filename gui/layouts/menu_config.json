@@ -1,8 +1,8 @@
 {
     "menu_bar": {
         "App":{
-            "Backup": "Backup",
-            "Restart": "Restart",
+            "Create Backup": "Backup",
+            "Restart DB": "Restart",
             "Exit": "Exit"
         },
         "Setup": {

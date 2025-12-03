@@ -45,13 +45,13 @@ def make_footer(table,footer_info,company_name):
 
 	for i, tnc in enumerate(footer_info["TnC"]):
 		if not i==0:
-			r5_01.append(tex.basic.SmallText(tex.LineBreak()))
-		r5_01.append(tex.basic.SmallText(tnc))
+			r5_01.append(tex.LineBreak())
+		r5_01.append(minor_env("footnotesize", tnc))
 
 	for key, val in footer_info["bank_info"].items():
 		if not key=='Bank':
-			r5_02.append(tex.basic.SmallText(tex.LineBreak()))
-		r5_02.append(tex.basic.SmallText(key+' : '+str(val)))
+			r5_02.append(tex.LineBreak())
+		r5_02.append(minor_env("footnotesize", key+' : '+str(val)))
 
 	line2 = tex.position.FlushRight(data="For "+company_name)
 	line2.append(tex.LineBreak())

@@ -10,11 +10,10 @@ from logging.handlers import RotatingFileHandler
 from summary_view import SaleSummaryView, PurchaseSummaryView
 
 def Exit(app, **kw):
-    # app.root.destroy()
-    # if not 'respawn' in kw.keys():
-    #     kw["db_conn"].close()
-    #     _ = os.system("python app_main.py")
-    pass
+    app.root.destroy()
+    if 'respawn' in kw.keys():
+         kw["db_conn"].close()
+         _ = os.system("python app_main.py")
 
 def Restart(app, **kw):
     print("Restarting Database Connection")
@@ -95,23 +94,24 @@ class MainApplication:
         # Create new tab
         #title = self._find_menu_label(class_name)
         tab_instance = tab_class(self, db_conn=self.db_conn, title=title, **kw)
-        tab_instance.root.pack(fill="both", expand=True)
+        if not tab_instance is None:
+            tab_instance.root.pack(fill="both", expand=True)
 
-        # # Use the menu label as tab title
-        self.notebook.add(tab_instance.root, text=title)
-        self.notebook.select(tab_instance.root)
+            # # Use the menu label as tab title
+            self.notebook.add(tab_instance.root, text=title)
+            self.notebook.select(tab_instance.root)
 
-        # Update tracker
-        if is_fy_dependent:
-            self.open_tabs["fy_dependent"] = title
-        else:
-            self.open_tabs["fy_independent"].add(title)
+            # Update tracker
+            if is_fy_dependent:
+                self.open_tabs["fy_dependent"] = title
+            else:
+                self.open_tabs["fy_independent"].add(title)
 
-        # Bind close event
-        if not no_bind:
-            tab_instance.root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
+            # Bind close event
+            if not no_bind:
+                tab_instance.root.bind("<Destroy>", lambda e, t=title: self._on_tab_close(t))
 
-        self.tab_instances[title] = tab_instance
+            self.tab_instances[title] = tab_instance
         #print("Adding tab. New tabs list = ", list(self.tab_instances.keys()))
 
     def _get_class_by_name(self, class_name):

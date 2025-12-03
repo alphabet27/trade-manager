@@ -161,7 +161,7 @@ class InvoiceView(UIBuilder):
 		doc.make_header()
 		footer_info = rept.get_footer(rept.document_info, table_ptr.data)
 		doc.make_invoice_table(invoice_info, footer_info, rept.inv_cols)
-		doc.save('zz_sample_full',source=True,doc=False)
+		doc.save(f'../reports/Invoice_{self.trsc_type}/{str(int(invoice_info["BILL"])).rjust(6, "0")}_{invoice_info["customer_info"]["ALIAS"]}',source=False,doc=True)
 
 	def on_exit(self):
 		if len(self.child_tabs)>0:
