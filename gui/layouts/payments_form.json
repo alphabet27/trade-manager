@@ -1,0 +1,58 @@
+{
+	"title": "Payment Entry",
+	"frames":{
+		"controls_frame":{
+			"widgets":[
+				{
+					"class": "Button",
+					"text" : "Save",
+					"command" : "on_save",
+					"command_kwargs" : {},
+					"grid" : {"row":4, "column":0, "sticky":"se", "pady":30, "padx":1}
+				},
+				{
+					"class": "Button",
+					"text" : "Cancel",
+					"command" : "on_cancel",
+					"command_kwargs" : {},
+					"grid" : {"row":4, "column":1, "sticky":"se", "pady":30, "padx":1}
+				}
+			],
+			"grid":{"row":5, "column":1}
+		},
+		"mode_label_frame":{
+			"widgets":[
+				{
+					"class":"Label",
+					"text" :"Add Mode",
+					"name" :"mode_label",
+					"grid" :{"row":0, "column":0}
+				}
+			],
+			"grid" : {"row":3, "column":0, "sticky":"w", "padx":10, "pady":10}
+		}
+	},
+	"custom_frames":{
+		"fy_select":{
+			"class":"selector",
+			"sql_query": "select * from fy_list",
+			"keys":["FY_ID","FY_NAME"],
+			"grid":{"row" : 1, "column" : 0, "sticky":"nw", "padx":20, "pady":20, "columnspan":2}
+		},
+		"party_select":{
+			"class":"selector",
+			"sql_query": "select ALIAS, PARTY_NAME from party_db where ACC_TYPE='sale'",
+			"keys":["ALIAS","PARTY_NAME"],
+			"grid":{"row" : 2, "column" : 0, "sticky":"nw", "padx":20, "columnspan":2}
+		},
+		"entry_block":{
+			"class":"widget_block",
+			"entry_dict" : {"PAY_ID":"",
+							"PAY_DATE":"", "AMOUNT" : "",
+							"PAY_MODE":"", "REMARKS": ""},
+			"combos":[],
+			"disabled":["PAY_ID"],
+			"grid" : {"row" : 4, "column" : 0, "columnspan":2, "sticky":"nw", "padx":20, "pady":30}
+		}
+	}
+}

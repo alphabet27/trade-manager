@@ -20,7 +20,6 @@ class BasicForm(UIBuilder):
 				temp_ptr["combos"].append(key)
 				temp_ptr["entry_dict"][key] = value
 
-
 	def build(self):
 		super().build()
 		self.main_form = self.custom_frames["entry_block"]
@@ -111,8 +110,8 @@ def FyForm(root, db_conn, title, *args, **kwargs):
 		return None
 	pf.layout["custom_frames"]["search_block"]["keys"] = ["FY_ID", "FY_NAME"]
 	ctrl_ptr = pf.layout["frames"]["controls_frame"]["widgets"]
-	ctrl_ptr[3]["command_kwargs"]["data_modif"] = make_fy
-	ctrl_ptr[3]["command_kwargs"]["sql_conn"] = pf.db_conn
+	ctrl_ptr[3]["command_kwargs"].update({"data_modif":make_fy,
+										  "sql_conn" : pf.db_conn})
 	ctrl_ptr[2]["command_kwargs"]["state"] = "disabled"
 	pf.layout["title"] = "FY Form"
 	pf.build()

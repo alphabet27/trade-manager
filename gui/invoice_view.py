@@ -57,6 +57,7 @@ class InvoiceView(UIBuilder):
 		if view_mode:
 			self.custom_frames["widget_block"].disable_entries(disable_all=True)
 			self.custom_frames["search_block"].mode_button.config(state="disabled")
+			self.on_refresh()
 
 	def add_tab(self, title, trsc_data, **kw):
 		self.db_conn.execute("SAVEPOINT trsc_form")
@@ -107,13 +108,17 @@ class InvoiceView(UIBuilder):
 		self.add_tab("Edit Trsc", tr_data)
 
 	def on_delete(self):
-		cursor = self.db_conn.cursor()
-		q = f"DELETE FROM {self.trsc_type}_fulldata_{self.fy_id} WHERE TID=?"
-		tr_data = self.custom_frames["create_treeview"].get_current(search_by=["SR_NO"])
-		sqlb.increment_stock(self.db_conn, tr_data, self.trsc_type, pop_null=True)
-		cursor.execute(q, (tr_data["TID"],))
-		self.db_conn.commit()
-		self.on_refresh()
+		cnf = messagebox.askyesnocancel("Warning!", "Confirm Delete Action?")
+		if cnf:
+			cursor = self.db_conn.cursor()
+			q = f"DELETE FROM {self.trsc_type}_fulldata_{self.fy_id} WHERE TID=?"
+			tr_data = self.custom_frames["create_treeview"].get_current(search_by=["SR_NO"])
+			sqlb.increment_stock(self.db_conn, tr_data, self.trsc_type, pop_null=True)
+			cursor.execute(q, (tr_data["TID"],))
+			self.db_conn.commit()
+			self.on_refresh()
+		else:
+			return
 
 	def on_refresh(self):
 		self.custom_frames["create_treeview"].refill_table(reload_data=True, use_con=self.db_conn)
@@ -168,9 +173,13 @@ class InvoiceView(UIBuilder):
 			cnf = messagebox.askyesnocancel("Warning!", "Close Sub-Modules?")
 			if cnf:
 				self.child_tabs[0].on_cancel()
+				self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
+				self.root.destroy()
 			else:
 				return
-		self.root.destroy()
+		else:
+			self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
+			self.root.destroy()
 
 if __name__=="__main__":
 	root = tk.Tk()

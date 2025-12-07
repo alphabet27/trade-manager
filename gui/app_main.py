@@ -5,8 +5,10 @@ import traceback
 from basic_forms import *
 from tkinter import messagebox
 from invoice_view import InvoiceView
+from ledgers import SaleLedger, PurcLedger
 from transaction_form import TransactionForm
 from logging.handlers import RotatingFileHandler
+from payments_form import SalePaymentForm, PurchasePaymentForm
 from summary_view import SaleSummaryView, PurchaseSummaryView
 
 def Exit(app, **kw):
@@ -66,7 +68,7 @@ class MainApplication:
 
     def _open_tab(self, class_name, no_bind=False, **kw):
         # Determine if this is an FY-dependent view
-        is_fy_dependent = class_name in ("SaleSummaryView", "PurchaseSummaryView")
+        is_fy_dependent = class_name in ("SaleSummaryView", "PurchaseSummaryView", "SalePaymentForm", "PurchasePaymentForm")
 
         # Check mutex rules
         if is_fy_dependent and self.open_tabs["fy_dependent"]:
@@ -121,13 +123,15 @@ class MainApplication:
             "FYForm": FyForm,
             "Restart": Restart,
             "PartyForm": PartyForm,
+            "SaleLedger":SaleLedger,
+            "PurcLedger":PurcLedger,
             "ProductForm": ProductForm,
             "InvoiceView" : InvoiceView,
             "TransactionForm": TransactionForm,
             "SaleSummaryView": SaleSummaryView,
-            "SalePaymentForm": "", #SalePaymentForm,
+            "SalePaymentForm": SalePaymentForm,
             "PurchaseSummaryView": PurchaseSummaryView,
-            "PurchasePaymentForm": "", #PurchasePaymentForm
+            "PurchasePaymentForm": PurchasePaymentForm
         }
         return classes.get(class_name)
 
@@ -179,6 +183,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1022x695")
     app = MainApplication(root)
-    #root.report_callback_exception = lambda exc=None,msg=None,tb=None : messagebox.showerror("Error",msg)
     root.report_callback_exception = handle_tkinter_error
     root.mainloop()

@@ -2,7 +2,7 @@
     "menu_bar": {
         "App":{
             "Create Backup": "Backup",
-            "Restart DB": "Restart",
+            "Restart": "Restart",
             "Exit": "Exit"
         },
         "Setup": {
@@ -20,7 +20,7 @@
         },
         "Ledgers": {
             "Ledger Sale" : "SaleLedger",
-            "Ledger Purchase" : "PurchaseLedger",
+            "Ledger Purchase" : "PurcLedger",
             "GST Ledger Sale" : "SaleGSTLedger",
             "GST Ledger Purchase" : "PurchaseGSTLedger"
         }

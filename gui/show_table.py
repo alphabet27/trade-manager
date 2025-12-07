@@ -93,11 +93,13 @@ class create_treeview(ttk.Treeview):
 		MS.add_command(label='Multi Sort', command=lambda:print('Multi Sort'))
 		MS.post(event.x_root, event.y_root)
 
-	def get_current(self, search_by=[]):
+	def get_current(self, search_by=[], get_raw=False):
 		curItem = self.focus()
 		temp = dict(zip(self['columns'] ,self.item(curItem)['values']))
 		if temp=={}:
-			raise Exception("Nothing Selected!!")
+			tk.messagebox.showerror("Error!", "Nothing Selected!!")
+		if get_raw:
+			return temp
 		return self.data.loc[self.data.id_by_dict(temp, search_by)].to_dict()
 
 if __name__=="__main__":

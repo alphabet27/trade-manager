@@ -42,11 +42,11 @@ class SummaryView(UIBuilder):
 
 	def add_tab(self, title, billdata, **kw):
 		if len(self.child_tabs)!=0:
-			raise Exception("Found open Sub-Modules!")
+			messagebox.showerror("Error", "Found open Sub-Modules!")
 			return
 		fy_id = self.current_fy.get()
 		if fy_id=="":
-			raise Exception("Please Select an FY!")
+			messagebox.showerror("Error", "Please Select an FY!")
 			return
 		self.parent.db_conn.execute("SAVEPOINT invoice_modif")
 		self.parent._open_tab("InvoiceView", title = title, billdata = billdata, trsc_type = self.trsc_type, fy_id = fy_id, no_bind=True, **kw)
@@ -79,7 +79,11 @@ class SummaryView(UIBuilder):
 		self.add_tab("Edit Mode", billdata)
 
 	def on_delete(self):
-		raise Exception("Cannot Delete! Not defined")
+		cnf = messagebox.askyesnocancel("Warning", "Confirm Delete? Action cannot be undone!")
+		if not cnf:
+			return
+		else:
+			messagebox.showerror("Error", "Cannot delete! Not defined!")
 
 	def on_export(self):
 		csv_files = [("CSV Files", "*.csv")]
@@ -93,7 +97,7 @@ class SummaryView(UIBuilder):
 		if len(self.child_tabs)>0:
 			cnf = messagebox.askyesnocancel("Warning!", "Close Sub-Modules?")
 			if cnf:
-				self.child_tabs[0].on_cancel()
+				self.child_tabs[0].on_exit()
 			else:
 				return
 		self.root.destroy()
@@ -108,7 +112,6 @@ class SummaryView(UIBuilder):
 		self.root.update()
 
 	def _on_tab_close(self, title):
-		#self.db_conn.execute("RELEASE SAVEPOINT invoice_modif")
 		self.parent._on_tab_close(title)
 		self.child_tabs = []
 		self.toogle_fy()
