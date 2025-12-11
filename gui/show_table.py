@@ -97,7 +97,7 @@ class create_treeview(ttk.Treeview):
 		curItem = self.focus()
 		temp = dict(zip(self['columns'] ,self.item(curItem)['values']))
 		if temp=={}:
-			tk.messagebox.showerror("Error!", "Nothing Selected!!")
+			raise Exception("Nothing Selected!!")
 		if get_raw:
 			return temp
 		return self.data.loc[self.data.id_by_dict(temp, search_by)].to_dict()

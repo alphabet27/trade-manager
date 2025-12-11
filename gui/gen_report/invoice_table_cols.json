@@ -1,14 +1,14 @@
 {
-	"SR_NO":["Sr No",6],
-	"PRODUCT_NAME":["Description of Goods",41],
-	"HSN_CODE":["HSN",11],
-	"MFG":["MFG. NAME",10],
-	"BATCH":["Batch No.",15],
-	"EXPIRY":["Exp.Dt.",14],
-	"GST":["GST",9],
-	"QTY":["Qty.",14],
-	"RATE":["Rate",15],
-	"MRP":["MRP",12],
-	"UNIT":["Unit",10],
-	"TAXABLE":["Amount",23]
+	"SR_NO":["Sr No",3],
+	"PRODUCT_NAME":["Description of Goods",26],
+	"HSN_CODE":["HSN",8],
+	"MFG":["MFG. NAME",7],
+	"BATCH":["Batch No.",8],
+	"EXPIRY":["Exp.Dt.",8],
+	"GST":["GST",4],
+	"QTY":["Qty.",7],
+	"RATE":["Rate",8],
+	"MRP":["MRP",6],
+	"UNIT":["Unit",5],
+	"TAXABLE":["Amount",10]
 }

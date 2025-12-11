@@ -92,9 +92,14 @@ class TransactionForm(UIBuilder):
 		self.custom_frames["search_block"].get_data()
 		data = dict(self.custom_frames["search_block"].output)
 		self.main_form.entry_dict["PID"] = data["PID"]
+		self.main_form.entry_dict["MFG"] = data["MFG"]
+		self.main_form.entry_dict["UNIT"] = data["UNIT"]
 		self.main_form.entry_dict["GST"] = data["GST_D"]
-		for key in ["QTY", "RATE", "DISC", "GST"]:
+		for key in ["QTY", "RATE", "DISC"]:
+			if old_data[key]=="":
+				old_data[key] = "0"
 			self.main_form.entry_dict[key] = old_data[key]
+		self.main_form.relabel()
 		self.load_batch()
 		self.load_history(data["PID"])
 

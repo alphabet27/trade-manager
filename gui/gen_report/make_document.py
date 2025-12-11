@@ -1,3 +1,4 @@
+from tkinter import messagebox
 import webbrowser
 
 from .table_fill import *
@@ -28,15 +29,16 @@ class make_document(tex.Document):
 		line_01.append(tex.LineBreak())
 		table1 = tex.Tabular(r"L{85mm} R{85mm}", width=2)
 		table1.add_row(("GSTIN NO. " + self.document_info["GSTIN NO."],
-						self.document_info["document_invoice_type"]))
-		line_01.append(table1)
-		table2 = tex.Tabular(r"L{85mm} R{85mm}", width=2)
-		table2.add_row(("STATE CODE : " + self.document_info["STATE CODE"],
 						"DL. No. : " + self.document_info["Licence No."]))
-		line_01.append(tex.LineBreak())
-		line_01.append(table2)
+		#table2 = tex.Tabular(r"L{85mm} R{85mm}", width=2)
+		table1.add_row((f"STATE CODE : {self.document_info['STATE CODE']}", ""))
+		line_02 = tex.position.Center(data="")
+		line_02.append(table1)
+		line_02.append(tex.LineBreak())
+		line_02.append(self.document_info["document_invoice_type"])
 		self.append(title)
-		self.append(tex.basic.LargeText(line_01))
+		self.append(tex.basic.MediumText(line_01))
+		self.append(tex.basic.LargeText(line_02))
 
 	def make_invoice_table(self, invoice_info, footer_info, show_cols):
 		table = make_tabular_inv(self, invoice_info)
@@ -53,7 +55,7 @@ class make_document(tex.Document):
 			if opendoc:
 				webbrowser.open_new_tab(filename+'.pdf')
 			else:
-				raise Exception("Saved to "+filename)
+				messagebox.showinfo("Info", "Saved to "+filename)
 
 def get_footer(doc_info, inv_table):
 	taxes = []

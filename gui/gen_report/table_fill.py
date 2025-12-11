@@ -45,9 +45,9 @@ def add_products(table,rendered_prod_df,col_widths,max_lines=24,carry_over=False
 	while i in range(len(rendered_prod_df)):
 		prod_data = rendered_prod_df.iloc[i].to_dict()
 		row_data = list(prod_data.values())
-		for j, col_val in enumerate(row_data):
-		 	if len(str(col_val))>widths[j][1]:
-		 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
+		#for j, col_val in enumerate(row_data):
+		# 	if len(str(col_val))>widths[j][1]:
+		# 		row_data[j] = " ".join(textwrap.wrap(col_val, widths[j]))
 		for j in range(len(row_data)):
 			if j+1 in footnote_cols:
 				row_data[j] = minor_env("footnotesize", str(row_data[j]))

@@ -29,16 +29,17 @@ def justify_float(num):
 def make_footer(table,footer_info,company_name):
 	r7_01 = tex.MultiRow(7,width='200pt',data='')
 	r7_02 = tex.MultiRow(7,width='200pt',data='')
-	r5_01 = tex.MultiRow(5,width='150pt',data='')
-	r5_02 = tex.MultiRow(5,width='120pt',data='')
+	r5_01 = tex.MultiRow(5,width='175pt',data='')
+	r5_02 = tex.MultiRow(5,width='150pt',data='')
 	r5_03 = tex.MultiRow(5,width='200pt',data='')
 	sub_table = tex.Tabular(r"|L{28mm} R{26mm} R{26mm} R{26mm}|",width=4)
 	sub_table.add_hline()
 	sub_table.add_row(("Tax Name", "Taxable", "CGST", "SGST"))
 	net_taxation = {"taxable":0,"tax":0}
 	for tax_name, taxable, tax in footer_info["Taxes"]:
-		sub_table.add_row(("GST " + str(round(tax_name,2)).rjust(2,'0') + "%", justify_float(taxable), justify_float(tax), justify_float(tax)))
-		net_taxation["tax"]+=tax
+		#sub_table.add_row(("GST " + str(round(tax_name,2)).rjust(2,'0') + "%", justify_float(taxable), justify_float(tax), justify_float(tax)))
+		sub_table.add_row((f"GST {tax_name:.2f}%", f"{taxable:.2f}", f"{(tax/2):.2f}", f"{(tax/2):.2f}"))
+		net_taxation["tax"]+=(tax)/2
 		net_taxation["taxable"]+=taxable
 	sub_table.add_hline()
 	r7_01.append(sub_table)
@@ -78,11 +79,14 @@ def make_footer(table,footer_info,company_name):
 	c5_11 = tex.MultiColumn(5, align='|l|', data = r5_03)
 	c5_12 = tex.MultiColumn(5, align='|l|', data = '')
 
-	table.add_row((c7_01,c4_01,str(round(net_taxation["taxable"],2))))
+	#table.add_row((c7_01,c4_01,str(round(net_taxation["taxable"],2))))
+	table.add_row((c7_01,c4_01,f"{net_taxation['taxable']:.2f}"))
 	table.add_hline(8,12)
-	table.add_row((c7_02,c4_02,str(round(net_taxation["tax"], 2))))
+	#table.add_row((c7_02,c4_02,str(round(net_taxation["tax"], 2))))
+	table.add_row((c7_02,c4_02,f"{net_taxation['tax']:.2f}"))
 	table.add_hline(8,12)
-	table.add_row((c7_02,c4_03,str(round(net_taxation["tax"], 2))))
+	#table.add_row((c7_02,c4_03,str(round(net_taxation["tax"], 2))))
+	table.add_row((c7_02,c4_03,f"{net_taxation['tax']:.2f}"))
 	table.add_hline(8,12)
 	table.add_row((c7_02,c4_04,""))
 	table.add_hline(8,12)
@@ -91,7 +95,7 @@ def make_footer(table,footer_info,company_name):
 	table.add_row((c7_02,c4_06,""))
 	table.add_hline(8,12)
 	table.add_row((c7_02,c4_04,""))
-	table.add_row((c7_02,c4_07,tex.basic.LargeText(str(int(net_taxation["taxable"] + net_taxation["tax"])))))
+	table.add_row((c7_02,c4_07,tex.basic.LargeText(str(int(net_taxation["taxable"] + 2*net_taxation["tax"])))))
 	table.add_hline()
 	table.add_row((c3_08,c4_09,c5_11))
 	table.add_row((c3_09,c4_10,c5_12))

@@ -151,6 +151,8 @@ class InvoiceView(UIBuilder):
 		self.parent.db_conn.commit()
 		if close_tab:
 			self.root.destroy()
+		else:
+			self.db_conn.execute("SAVEPOINT invoice_modif")
 
 	def on_print(self):
 		self.on_save(False)
@@ -161,10 +163,11 @@ class InvoiceView(UIBuilder):
 		print("Printing bill =",billdata)
 		invoice_info = sqlb.get_invoice_data(self.db_conn, sel_ptr.output["ALIAS"], billdata)
 		print("customer_info =", invoice_info["customer_info"])
-		invoice_info["bill_df_ren"] = table_ptr.data
+		invoice_info["bill_df_ren"] = sqlb.pd.DataFrame(table_ptr.data)
+		invoice_info["bill_df_ren"]["RATE"] = invoice_info["bill_df_ren"]["RATE"]*(1 - invoice_info["bill_df_ren"]["DISC"]/100)
 		doc = rept.make_doc(rept.document_info, show_cols = rept.inv_cols)
 		doc.make_header()
-		footer_info = rept.get_footer(rept.document_info, table_ptr.data)
+		footer_info = rept.get_footer(rept.document_info, invoice_info["bill_df_ren"])
 		doc.make_invoice_table(invoice_info, footer_info, rept.inv_cols)
 		doc.save(f'../reports/Invoice_{self.trsc_type}/{str(int(invoice_info["BILL"])).rjust(6, "0")}_{invoice_info["customer_info"]["ALIAS"]}',source=False,doc=True)
 
