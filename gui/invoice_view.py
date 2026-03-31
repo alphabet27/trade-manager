@@ -113,7 +113,9 @@ class InvoiceView(UIBuilder):
 			cursor = self.db_conn.cursor()
 			q = f"DELETE FROM {self.trsc_type}_fulldata_{self.fy_id} WHERE TID=?"
 			tr_data = self.custom_frames["create_treeview"].get_current(search_by=["SR_NO"])
-			sqlb.increment_stock(self.db_conn, tr_data, self.trsc_type, pop_null=True)
+			stock_data = dict(PID = tr_data["PID"], QTY=tr_data["QTY"], BATCH=tr_data["BATCH"],
+							  EXPIRY=tr_data["EXPIRY"], MRP=tr_data["MRP"])
+			sqlb.increment_stock(self.db_conn, stock_data, self.trsc_type, pop_null=True)
 			cursor.execute(q, (tr_data["TID"],))
 			self.db_conn.commit()
 			self.on_refresh()
@@ -164,7 +166,7 @@ class InvoiceView(UIBuilder):
 		invoice_info = sqlb.get_invoice_data(self.db_conn, sel_ptr.output["ALIAS"], billdata)
 		print("customer_info =", invoice_info["customer_info"])
 		invoice_info["bill_df_ren"] = sqlb.pd.DataFrame(table_ptr.data)
-		invoice_info["bill_df_ren"]["RATE"] = invoice_info["bill_df_ren"]["RATE"]*(1 - invoice_info["bill_df_ren"]["DISC"]/100)
+		invoice_info["bill_df_ren"]["RATE"] = (invoice_info["bill_df_ren"]["RATE"]*(1 - invoice_info["bill_df_ren"]["DISC"]/100)).round(decimals=2)
 		doc = rept.make_doc(rept.document_info, show_cols = rept.inv_cols)
 		doc.make_header()
 		footer_info = rept.get_footer(rept.document_info, invoice_info["bill_df_ren"])
