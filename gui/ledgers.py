@@ -14,6 +14,19 @@ def get_ledger_data(trsc_type, fy_id, alias):
 	ldr_query = ldr_query.replace("billdata_table", f"{trsc_type}_billdata_{fy_id}")
 	ldr_query = ldr_query.replace("payments_table", f"{trsc_type}_payments_{fy_id}")
 	df = sqlb.SQL_DataFrame(con = db_conn, sql=ldr_query, params=(alias, alias))
+	df["Date"] = sqlb.pd.to_datetime(df["Date"], dayfirst=True)
+	df = df.sort_values(["Date","BILL/PAY_ID"], ascending=True)
+	df["Date"] = df["Date"].dt.date
+	return df
+
+def get_hsn_summary(trsc_type, fy_id):
+	queries = sqlb.get_queries('view')
+	hsn_query = queries['hsn_summary_view']
+	hsn_query = hsn_query.replace("fulldata_table", f"{trsc_type}_fulldata_{fy_id}")
+	hsn_query = hsn_query.replace("billdata_table", f"{trsc_type}_billdata_{fy_id}")
+	df = sqlb.SQL_DataFrame(con = db_conn, sql=hsn_query)
+	df["INVOICE_DATE"] = sqlb.pd.to_datetime(df["INVOICE_DATE"], dayfirst=True)
+	df["INVOICE_DATE"] = df["INVOICE_DATE"].dt.date
 	return df
 
 class Ledger(UIBuilder):
@@ -150,3 +163,54 @@ def SaleLedger(parent, db_conn, title, **kw):
 
 def PurcLedger(parent, db_conn, title, **kw):
 	return Ledger(parent, "purc", db_conn, title, **kw)
+
+
+class HSNLedger(UIBuilder):
+	def __init__(self, parent, trsc_type, db_conn, title, **kw):
+		self.parent = parent
+		root = ttk.Frame(parent.notebook)
+		super().__init__(root, layout_file="layouts/hsn_summary_view.json")
+		self.layout["title"] = title
+		self.db_conn = db_conn
+		self.trsc_type = trsc_type
+		self.current_fy = tk.StringVar(root, value="")
+		self.fy_current = ""
+		fr_ptr = self.layout["frames"]["fy_select"]["widgets"]
+		for i, fy_id in enumerate(fy_dict.keys()):
+			fr_ptr.append({"class": "Radiobutton",
+						   "text" : fy_dict[fy_id],
+						   "variable" : "current_fy",
+						   "value" : fy_id,
+						   "command": "toogle_fy",
+						   "command_kwargs":{},
+						   "grid":{"row":i+1, "column":0}})
+		self.child_tabs = []
+		self.build()
+
+	def toogle_fy(self, event=None):
+		fy_id = self.current_fy.get()
+		self.fy_current = str(fy_id)
+		if fy_id=="":
+			messagebox.showerror("Error", "No FY Selected!")
+			return
+		curr_data = get_hsn_summary(self.trsc_type, fy_id)
+		self.custom_frames["create_treeview"].data = curr_data
+		self.custom_frames["create_treeview"].refill_table()
+		self.root.update()
+
+	def on_export(self):
+		csv_files = [("CSV Files", "*.csv")]
+		fd = filedialog.asksaveasfile(initialdir=f'../reports/HSN_Summary_{self.trsc_type}', filetypes=csv_files, defaultextension=csv_files, initialfile=f"{self.current_fy.get()}.csv")
+		if not fd is None:
+			self.custom_frames["create_treeview"].data.to_csv(fd, index=False)
+		else:
+			print("Recieved None!!")
+
+	def on_close(self):
+		self.root.destroy()
+
+def Sale_HSN_Summary(parent, db_conn, title, **kw):
+	return HSNLedger(parent, "sale", db_conn, title, **kw)
+
+def Purchase_HSN_Summary(parent, db_conn, title, **kw):
+	return HSNLedger(parent, "purc", db_conn, title, **kw)

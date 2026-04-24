@@ -10,6 +10,7 @@ from transaction_form import TransactionForm
 from logging.handlers import RotatingFileHandler
 from payments_form import SalePaymentForm, PurchasePaymentForm
 from summary_view import SaleSummaryView, PurchaseSummaryView
+from ledgers import Sale_HSN_Summary, Purchase_HSN_Summary
 
 def Exit(app, **kw):
     app.root.destroy()
@@ -131,7 +132,9 @@ class MainApplication:
             "SaleSummaryView": SaleSummaryView,
             "SalePaymentForm": SalePaymentForm,
             "PurchaseSummaryView": PurchaseSummaryView,
-            "PurchasePaymentForm": PurchasePaymentForm
+            "PurchasePaymentForm": PurchasePaymentForm,
+            "Sale_HSN_Summary":Sale_HSN_Summary,
+            "Purc_HSN_Summary":Purchase_HSN_Summary
         }
         return classes.get(class_name)
 

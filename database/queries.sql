@@ -18,6 +18,28 @@ ORDER BY
     sb.BILL ASC;
 --%
 
+--%view=hsn_summary_view
+--%
+SELECT 
+	fd.BILL AS BILL,
+	bd.INVOICE_DATE AS INVOICE_DATE,
+	bd.ALIAS AS ALIAS,
+    pd.HSN_CODE as HSN_CODE,
+	fd.GST as GST,
+	ROUND(SUM(fd.QTY*fd.RATE - fd.QTY*fd.RATE*fd.DISC/100), 2) as "TAXABLE"
+FROM 
+	fulldata_table AS fd
+JOIN 
+	product_db as pd ON fd.PID = pd.PID
+JOIN 
+	billdata_table as bd ON fd.BILL = bd.BILL
+GROUP BY 
+	fd.BILL, pd.HSN_CODE
+ORDER BY
+    pd.HSN_CODE, fd.BILL
+--%
+
+
 --%view=ledger_alias
 --%
 -- Query for specific alias

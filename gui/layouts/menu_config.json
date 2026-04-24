@@ -22,7 +22,9 @@
             "Ledger Sale" : "SaleLedger",
             "Ledger Purchase" : "PurcLedger",
             "GST Ledger Sale" : "SaleGSTLedger",
-            "GST Ledger Purchase" : "PurchaseGSTLedger"
+            "GST Ledger Purchase" : "PurchaseGSTLedger",
+            "HSN Summary Sale":"Sale_HSN_Summary",
+            "HSN Summary Purchase":"Purc_HSN_Summary"
         }
     }
 }
